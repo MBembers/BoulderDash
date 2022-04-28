@@ -26,24 +26,33 @@ export interface IGame {
 }
 
 export interface IPlayer {
-  xPos: number;
-  yPos: number;
-  color: string;
-}
-
-export interface ITile {
+  x: number;
+  y: number;
   type: string;
   color: string;
 }
 
-export interface IBoulder {
+export interface ITile {
+  x: number;
+  y: number;
+  type: string;
   color: string;
+  sprite: string;
+}
+
+export interface IBoulder {
+  x: number;
+  y: number;
+  color: string;
+  type: string;
+  sprite: string;
 }
 
 export interface ITilePalette {
   clear: string;
   dirt: string;
   wall: string;
+  boulder: string;
 }
 
-export type Entity = ITile | IBoulder | IPlayer | string;
+export type Entity = ITile | IBoulder | IPlayer;

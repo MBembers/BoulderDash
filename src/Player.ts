@@ -1,11 +1,20 @@
 import { IPlayer } from "./types";
 
 export default class Player implements IPlayer {
-  xPos: number;
-  yPos: number;
+  x: number;
+  y: number;
+  type: string;
   color: string;
 
-  constructor() {
+  constructor(x: number, y: number) {
+    this.x = x;
+    this.y = y;
     this.color = "red";
+    this.type = "player";
+  }
+
+  setPos(x: number, y: number) {
+    this.x = x;
+    this.y = y;
   }
 }

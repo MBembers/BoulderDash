@@ -8,8 +8,9 @@ export const TileType = {
 
 export const TilePalette: ITilePalette = {
   clear: "#101010",
-  dirt: "brown",
-  wall: "gray",
+  dirt: "hsl(30, 35%, 35%)",
+  wall: "hsl(30, 0%, 50%)",
+  boulder: "hsl(30, 10%, 69%)",
 };
 
 export const testColors: string[] = [

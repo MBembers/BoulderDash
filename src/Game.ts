@@ -1,5 +1,8 @@
+import Boulder from "./Boulder";
 import Player from "./Player";
+import Tile from "./Tile";
 import { Entity } from "./types";
+import { getCornerNeighbours, getNeighbours, isBoulder } from "./utils";
 
 export default class Game {
   canvasWidth: number;
@@ -15,13 +18,18 @@ export default class Game {
   board: Entity[][];
   playerPosX: number;
   playerPosY: number;
-  canMove: boolean;
+  startX: number;
+  startY: number;
+  isMoving: boolean;
   cameraX: number;
   cameraY: number;
   cameraDestX: number;
   cameraDestY: number;
   cameraSpeed: number; // pixels per tick CHANGE THAT
   player: Player;
+  moveInterval: NodeJS.Timer;
+  bImage: HTMLImageElement;
+  dImage: HTMLImageElement;
 
   testCounter: number;
 
@@ -38,14 +46,22 @@ export default class Game {
     this.yTiles = 50;
     this.cameraX = this.canvasWidth / 2;
     this.cameraY = this.canvasHeight / 2;
-    this.playerPosX = 6;
-    this.playerPosY = 6;
-    this.canMove = true;
+    this.startX = 6;
+    this.startY = 6;
+    this.playerPosX = this.startX;
+    this.playerPosY = this.startY;
+    this.isMoving = false;
     this.boardWidth = this.xTiles * this.tileWidth;
     this.boardHeight = this.yTiles * this.tileHeight;
     this.cameraDestX = this.cameraX;
     this.cameraDestY = this.cameraY;
     this.cameraSpeed = 10;
+    this.bImage = new Image();
+    this.bImage.src = "./assets/boulder.png";
+
+    this.dImage = new Image();
+    this.dImage.src = "./assets/dirt.png";
+    this.player = new Player(this.startX, this.startY);
 
     this.setCameraDest();
 
@@ -58,91 +74,80 @@ export default class Game {
     this.ctx = this.canvasHtml.getContext("2d");
 
     this.listeners();
-    this.createBoard(this.xTiles, this.yTiles);
+    this.createBoard();
     this.render();
-    window.setInterval(this.render.bind(this), 1000 / 30);
+    setInterval(this.render.bind(this), 1000 / 30);
   }
 
-  createBoard(xnum: number, ynum: number) {
+  createBoard() {
     this.board = [];
-    for (let i = 0; i < ynum; i++) {
-      this.board.push(new Array(xnum));
+    for (let i = 0; i < this.yTiles; i++) {
+      this.board.push(new Array(this.xTiles));
     }
-    for (let i = 0; i < ynum; i++) {
-      for (let j = 0; j < xnum; j++) {
-        this.board[i][j] =
-          this.testColors[Math.floor(Math.random() * this.testColors.length)];
+    for (let i = 0; i < this.yTiles; i++) {
+      for (let j = 0; j < this.xTiles; j++) {
+        if (
+          i === 0 ||
+          j === 0 ||
+          i === this.yTiles - 1 ||
+          j === this.xTiles - 1
+        )
+          this.board[i][j] = new Tile(j, i, "wall", this.board);
+        else if (i === 1 || i === 2 || i === 3)
+          this.board[i][j] = new Boulder(j, i, this.board);
+        else this.board[i][j] = new Tile(j, i, "dirt", this.board);
       }
     }
-
-    this.board[this.playerPosY][this.playerPosX] = this.player;
+    this.board[this.player.y][this.player.x] = this.player;
   }
 
   render() {
     this.setCameraDest();
     this.updateCamera();
-    this.clear();
+    this.clearCanvas();
     for (let i = 0; i < this.yTiles; i++) {
       for (let j = 0; j < this.xTiles; j++) {
-        // color
-        if (this.playerPosX === j && this.playerPosY === i)
-          this.ctx.fillStyle = "red";
-        else if (
-          j === 0 ||
-          i === 0 ||
-          i === this.yTiles - 1 ||
-          j === this.xTiles - 1
-        )
-          this.ctx.fillStyle = "blue";
-        else this.ctx.fillStyle = this.board[i][j];
+        let entity = this.board[i][j];
+        let x = j * this.tileWidth + (this.canvasWidth / 2 - this.cameraX);
+        let y = i * this.tileHeight + (this.canvasHeight / 2 - this.cameraY);
 
-        // tile
-        this.ctx.fillRect(
-          j * this.tileWidth + (this.canvasWidth / 2 - this.cameraX),
-          i * this.tileHeight + (this.canvasHeight / 2 - this.cameraY),
-          this.tileWidth,
-          this.tileHeight
-        );
-
-        // player border
-        if (this.playerPosX === j && this.playerPosY === i) {
-          this.ctx.strokeStyle = "white";
-          this.ctx.lineWidth = 2.0;
-          this.ctx.strokeRect(
-            j * this.tileWidth + (this.canvasWidth / 2 - this.cameraX),
-            i * this.tileHeight + (this.canvasHeight / 2 - this.cameraY),
+        if (isBoulder(entity)) {
+          this.ctx.drawImage(
+            this.bImage as CanvasImageSource,
+            x,
+            y,
             this.tileWidth,
             this.tileHeight
           );
-          this.ctx.lineWidth = 1.0;
+        } else if (entity.type === "dirt") {
+          this.ctx.drawImage(
+            this.dImage as CanvasImageSource,
+            x,
+            y,
+            this.tileWidth,
+            this.tileHeight
+          );
+        } else {
+          // color
+          this.ctx.fillStyle = entity.color;
+
+          // tile
+          this.ctx.fillRect(x, y, this.tileWidth, this.tileHeight);
         }
       }
     }
   }
 
   setCameraDest() {
-    const playerX = this.playerPosX * this.tileWidth + this.tileWidth / 2;
-    const playerY = this.playerPosY * this.tileHeight + this.tileHeight / 2;
+    const playerX = this.player.x * this.tileWidth + this.tileWidth / 2;
+    const playerY = this.player.y * this.tileHeight + this.tileHeight / 2;
     const dx = (this.canvasWidth / 2) * 0.65;
     const dy = (this.canvasHeight / 2) * 0.65;
-    if (Math.abs(playerX - this.cameraX) >= dx)
-      this.cameraDestX = this.playerPosX * this.tileWidth + this.tileWidth / 2;
-    if (Math.abs(playerY - this.cameraY) >= dy)
-      this.cameraDestY =
-        this.playerPosY * this.tileHeight + this.tileHeight / 2;
+    if (Math.abs(playerX - this.cameraX) >= dx) this.cameraDestX = playerX;
+    if (Math.abs(playerY - this.cameraY) >= dy) this.cameraDestY = playerY;
   }
 
   updateCamera() {
-    console.log(
-      "destX:",
-      this.cameraDestX,
-      "cameraX:",
-      this.cameraX,
-      "destY:",
-      this.cameraDestY,
-      "cameraY",
-      this.cameraY
-    );
     if (Math.abs(this.cameraDestX - this.cameraX) > this.cameraSpeed)
       this.cameraDestX > this.cameraX
         ? (this.cameraX += this.cameraSpeed)
@@ -164,23 +169,57 @@ export default class Game {
       this.cameraY = this.boardHeight - this.canvasHeight / 2;
   }
 
-  clear() {
+  clearCanvas() {
     this.ctx.clearRect(0, 0, this.canvasWidth, this.canvasHeight);
+  }
+
+  movePlayer(newX: number, newY: number) {
+    if (this.board[newY][newX].type !== "wall") {
+      if (this.board[newY][newX].type === "boulder") {
+      } else {
+        // moved
+        let prevX = this.player.x;
+        let prevY = this.player.y;
+        this.board[this.player.y][this.player.x] = new Tile(
+          this.player.x,
+          this.player.y,
+          "clear",
+          this.board
+        );
+        this.player.setPos(newX, newY);
+        this.board[this.player.y][this.player.x] = this.player;
+
+        for (let entity of getCornerNeighbours(prevX, prevY, this.board)) {
+          if (isBoulder(entity)) {
+            entity.checkForFall();
+          }
+        }
+      }
+    }
   }
 
   listeners() {
     this.testCounter = 0;
     document.addEventListener("keydown", (e) => {
-      if (this.canMove) {
-        if (e.code === "ArrowRight") this.playerPosX++;
-        if (e.code === "ArrowLeft") this.playerPosX--;
-        if (e.code === "ArrowUp") this.playerPosY--;
-        if (e.code === "ArrowDown") this.playerPosY++;
-        this.canMove = false;
-        window.setTimeout(() => {
-          this.canMove = true;
-        }, 1000 / 10);
+      // console.log(e.code);
+      if (!this.isMoving) {
+        this.isMoving = true;
+        this.moveInterval = setInterval(() => {
+          if (e.code === "ArrowRight")
+            this.movePlayer(this.player.x + 1, this.player.y);
+          if (e.code === "ArrowLeft")
+            this.movePlayer(this.player.x - 1, this.player.y);
+          if (e.code === "ArrowUp")
+            this.movePlayer(this.player.x, this.player.y - 1);
+          if (e.code === "ArrowDown")
+            this.movePlayer(this.player.x, this.player.y + 1);
+        }, 1200 / 10);
       }
+    });
+    document.addEventListener("keyup", (e) => {
+      // console.log("BREAK:", e.code);
+      clearInterval(this.moveInterval);
+      this.isMoving = false;
     });
   }
 }
