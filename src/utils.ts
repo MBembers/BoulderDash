@@ -1,4 +1,6 @@
 import Boulder from "./Boulder";
+import Diamond from "./Diamond";
+import PhysicsBody from "./PhysicsBody";
 import { Entity } from "./types";
 
 export function getNeighbours(
@@ -28,4 +30,16 @@ export function getCornerNeighbours(
 
 export function isBoulder(entity: Entity): entity is Boulder {
   return entity.type === "boulder";
+}
+
+export function isDiamond(entity: Entity): entity is Diamond {
+  return entity.type === "diamond";
+}
+
+export function isPhysicsBody(entity: Entity): entity is PhysicsBody {
+  return ["boulder", "diamond", "physics-body"].includes(entity.type);
+}
+
+export function isSlippery(entity: Entity): boolean {
+  return isPhysicsBody(entity) || entity.type === "platform";
 }

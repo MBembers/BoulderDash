@@ -1,14 +1,21 @@
 import Boulder from "./Boulder";
+import Diamond from "./Diamond";
 import Player from "./Player";
 import Tile from "./Tile";
 import { Entity } from "./types";
-import { getCornerNeighbours, getNeighbours, isBoulder } from "./utils";
+import {
+  getCornerNeighbours,
+  getNeighbours,
+  isBoulder,
+  isPhysicsBody,
+} from "./utils";
 
 export default class Game {
   canvasWidth: number;
   canvasHeight: number;
   tileWidth: number;
   tileHeight: number;
+  topBarHeight: number;
   xTiles: number; // number of tiles
   yTiles: number;
   boardWidth: number; // real size in pixels
@@ -40,6 +47,7 @@ export default class Game {
   setup() {
     this.canvasWidth = 800;
     this.canvasHeight = 500;
+    this.topBarHeight = 50;
     this.tileWidth = 40;
     this.tileHeight = 40;
     this.xTiles = 50;
@@ -56,31 +64,31 @@ export default class Game {
     this.cameraDestX = this.cameraX;
     this.cameraDestY = this.cameraY;
     this.cameraSpeed = 10;
+    this.board = [];
+
     this.bImage = new Image();
     this.bImage.src = "./assets/boulder.png";
 
     this.dImage = new Image();
     this.dImage.src = "./assets/dirt.png";
-    this.player = new Player(this.startX, this.startY);
+    this.player = new Player(this.startX, this.startY, this.board);
 
     this.setCameraDest();
 
     this.canvasHtml = document.createElement("canvas") as HTMLCanvasElement;
     this.canvasHtml.width = this.canvasWidth;
-    this.canvasHtml.height = this.canvasHeight;
+    this.canvasHtml.height = this.canvasHeight + this.topBarHeight;
     this.canvasHtml.id = "game-canvas";
     document.getElementById("main").appendChild(this.canvasHtml);
 
     this.ctx = this.canvasHtml.getContext("2d");
 
-    this.listeners();
     this.createBoard();
     this.render();
     setInterval(this.render.bind(this), 1000 / 30);
   }
 
   createBoard() {
-    this.board = [];
     for (let i = 0; i < this.yTiles; i++) {
       this.board.push(new Array(this.xTiles));
     }
@@ -93,8 +101,11 @@ export default class Game {
           j === this.xTiles - 1
         )
           this.board[i][j] = new Tile(j, i, "wall", this.board);
-        else if (i === 1 || i === 2 || i === 3)
+        else if (i < 6)
+          // else if (Math.random() < 0.12)
           this.board[i][j] = new Boulder(j, i, this.board);
+        else if (Math.random() < 0.1)
+          this.board[i][j] = new Diamond(j, i, this.board);
         else this.board[i][j] = new Tile(j, i, "dirt", this.board);
       }
     }
@@ -111,11 +122,12 @@ export default class Game {
         let x = j * this.tileWidth + (this.canvasWidth / 2 - this.cameraX);
         let y = i * this.tileHeight + (this.canvasHeight / 2 - this.cameraY);
 
-        if (isBoulder(entity)) {
+        if (entity.sprite === "boulder") {
+          // BETTER SPRITES
           this.ctx.drawImage(
             this.bImage as CanvasImageSource,
             x,
-            y,
+            y + this.topBarHeight,
             this.tileWidth,
             this.tileHeight
           );
@@ -123,7 +135,7 @@ export default class Game {
           this.ctx.drawImage(
             this.dImage as CanvasImageSource,
             x,
-            y,
+            y + this.topBarHeight,
             this.tileWidth,
             this.tileHeight
           );
@@ -132,10 +144,21 @@ export default class Game {
           this.ctx.fillStyle = entity.color;
 
           // tile
-          this.ctx.fillRect(x, y, this.tileWidth, this.tileHeight);
+          this.ctx.fillRect(
+            x,
+            y + this.topBarHeight,
+            this.tileWidth,
+            this.tileHeight
+          );
         }
       }
     }
+
+    // this.ctx.fillStyle = "hsl(0, 0%, 0%, 50%)";
+    // this.ctx.fillRect(0, 0, this.canvasWidth, this.canvasHeight); // PRZYCIEMNIENIE
+
+    this.ctx.fillStyle = "hsl(0, 0%, 0%)";
+    this.ctx.fillRect(0, 0, this.canvasWidth, this.topBarHeight);
   }
 
   setCameraDest() {
@@ -170,56 +193,11 @@ export default class Game {
   }
 
   clearCanvas() {
-    this.ctx.clearRect(0, 0, this.canvasWidth, this.canvasHeight);
-  }
-
-  movePlayer(newX: number, newY: number) {
-    if (this.board[newY][newX].type !== "wall") {
-      if (this.board[newY][newX].type === "boulder") {
-      } else {
-        // moved
-        let prevX = this.player.x;
-        let prevY = this.player.y;
-        this.board[this.player.y][this.player.x] = new Tile(
-          this.player.x,
-          this.player.y,
-          "clear",
-          this.board
-        );
-        this.player.setPos(newX, newY);
-        this.board[this.player.y][this.player.x] = this.player;
-
-        for (let entity of getCornerNeighbours(prevX, prevY, this.board)) {
-          if (isBoulder(entity)) {
-            entity.checkForFall();
-          }
-        }
-      }
-    }
-  }
-
-  listeners() {
-    this.testCounter = 0;
-    document.addEventListener("keydown", (e) => {
-      // console.log(e.code);
-      if (!this.isMoving) {
-        this.isMoving = true;
-        this.moveInterval = setInterval(() => {
-          if (e.code === "ArrowRight")
-            this.movePlayer(this.player.x + 1, this.player.y);
-          if (e.code === "ArrowLeft")
-            this.movePlayer(this.player.x - 1, this.player.y);
-          if (e.code === "ArrowUp")
-            this.movePlayer(this.player.x, this.player.y - 1);
-          if (e.code === "ArrowDown")
-            this.movePlayer(this.player.x, this.player.y + 1);
-        }, 1200 / 10);
-      }
-    });
-    document.addEventListener("keyup", (e) => {
-      // console.log("BREAK:", e.code);
-      clearInterval(this.moveInterval);
-      this.isMoving = false;
-    });
+    this.ctx.clearRect(
+      0,
+      0,
+      this.canvasWidth,
+      this.canvasHeight + this.topBarHeight
+    );
   }
 }

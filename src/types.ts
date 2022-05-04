@@ -30,6 +30,8 @@ export interface IPlayer {
   y: number;
   type: string;
   color: string;
+  sprite: string;
+  board: Entity[][];
 }
 
 export interface ITile {
@@ -40,12 +42,23 @@ export interface ITile {
   sprite: string;
 }
 
-export interface IBoulder {
+export interface IBoulder extends IPhysicsBody {
+  color: string;
+  sprite: string;
+}
+
+export interface IDiamond extends IPhysicsBody {
+  points: number;
+}
+
+export interface IPhysicsBody {
   x: number;
   y: number;
   color: string;
-  type: string;
   sprite: string;
+  board: Entity[][];
+  type: string;
+  // fallInterval: NodeJS.Timer;
 }
 
 export interface ITilePalette {
@@ -55,4 +68,4 @@ export interface ITilePalette {
   boulder: string;
 }
 
-export type Entity = ITile | IBoulder | IPlayer;
+export type Entity = ITile | IPhysicsBody | IPlayer;
