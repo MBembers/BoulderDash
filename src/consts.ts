@@ -7,7 +7,7 @@ export const TileType = {
 };
 
 export const TilePalette: ITilePalette = {
-  clear: "#101010",
+  clear: "#555555",
   dirt: "hsl(30, 35%, 35%)",
   wall: "hsl(30, 0%, 80%)",
   twall: "hsl(30, 0%, 50%)",

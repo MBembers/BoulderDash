@@ -5,6 +5,8 @@ import Player from "./Player";
 import Tile from "./Tile";
 import Enemy from "./Enemy";
 import { Entity } from "./types";
+import Butterfly from "./Butterfly";
+import Firefly from "./Firefly";
 
 export default class Game {
   canvasWidth: number;
@@ -64,7 +66,7 @@ export default class Game {
     this.board = [];
 
     this.spritesheet = new Image();
-    this.spritesheet.src = "./assets/sprites_1.png";
+    this.spritesheet.src = "./assets/sprites_2.png";
     this.animationFrame = 0;
 
     this.player = new Player(this.startX, this.startY, this.board);
@@ -81,7 +83,7 @@ export default class Game {
 
     this.createBoard();
     this.render();
-    setInterval(this.render.bind(this), 1000 / 30);
+    setInterval(this.render.bind(this), 1000 / 24);
   }
 
   createBoard() {
@@ -106,8 +108,8 @@ export default class Game {
       }
     }
     this.board[this.player.y][this.player.x] = this.player;
-    this.board[10][10] = new Enemy(10, 10, this.board, "left");
-    this.board[10][15] = new Enemy(15, 10, this.board, "right");
+    this.board[10][10] = new Butterfly(10, 10, this.board);
+    this.board[10][15] = new Firefly(15, 10, this.board);
   }
 
   render() {
@@ -131,12 +133,7 @@ export default class Game {
           this.ctx.fillStyle = entity.color;
 
           // tile
-          this.ctx.fillRect(
-            x,
-            y + this.topBarHeight,
-            this.tileWidth,
-            this.tileHeight
-          );
+          this.ctx.fillRect(x, y, this.tileWidth, this.tileHeight);
         }
       }
     }
@@ -207,8 +204,8 @@ export default class Game {
   animations() {
     for (let row of this.board) {
       for (let entity of row) {
-        if (entity.type === "diamond") {
-          entity.sprite = "diamond" + this.animationFrame;
+        if (["diamond", "firefly", "butterfly"].includes(entity.type)) {
+          entity.sprite = entity.type + this.animationFrame;
         }
       }
     }

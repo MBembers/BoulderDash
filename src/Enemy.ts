@@ -1,6 +1,7 @@
 import { dirs, velocityX } from "./consts";
 import Tile from "./Tile";
 import { Entity, IEnemy } from "./types";
+import { getCornerNeighbours, isPhysicsBody } from "./utils";
 
 export default class Enemy implements IEnemy {
   x: number;
@@ -36,8 +37,8 @@ export default class Enemy implements IEnemy {
       } else {
         this.turn(this.turning === "left" ? "right" : "left");
       }
-      console.log(this.direction);
-    }, 1000 / 2);
+      // console.log(this.direction);
+    }, 1000 / 8);
   }
 
   checkInDir(dir: string): boolean {
@@ -67,8 +68,14 @@ export default class Enemy implements IEnemy {
       this.x = this.x - 1;
     }
 
+    this.board[prevY][prevX] = new Tile(prevX, prevY, "clear", this.board);
     this.board[this.y][this.x] = this;
-    this.board[prevY][prevX] = new Tile(this.x, this.y, "clear", this.board);
+
+    for (let e of getCornerNeighbours(prevX, prevY, this.board)) {
+      if (isPhysicsBody(e)) {
+        e.checkForFall();
+      }
+    }
   }
 
   checkSide(turn: string): boolean {

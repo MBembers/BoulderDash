@@ -97,7 +97,7 @@ export default class Player implements IPlayer {
           if (e.code === "ArrowLeft") this.checkMove(this.x - 1, this.y);
           if (e.code === "ArrowUp") this.checkMove(this.x, this.y - 1);
           if (e.code === "ArrowDown") this.checkMove(this.x, this.y + 1);
-        }, 1200 / 10);
+        }, 1200 / 8);
       }
     });
     document.addEventListener("keyup", (e) => {
