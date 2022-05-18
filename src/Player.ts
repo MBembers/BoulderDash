@@ -26,7 +26,7 @@ export default class Player implements IPlayer {
     this.y = y;
     this.color = "red";
     this.type = "player";
-    this.sprite = "none";
+    this.sprite = "player";
     this.board = board;
     this.points = 0;
     this.isMoving = false;
@@ -43,6 +43,7 @@ export default class Player implements IPlayer {
     let entity = this.board[newY][newX];
     if (
       entity.type === "wall" ||
+      entity.type === "twall" ||
       (isPhysicsBody(entity) && entity.isMoving === true)
     ) {
       return;

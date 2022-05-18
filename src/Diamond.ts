@@ -7,6 +7,7 @@ export default class Diamond extends PhysicsBody implements IDiamond {
     super(x, y, board);
     this.type = "diamond";
     this.color = "pink";
+    this.sprite = "diamond0";
     this.points = 1;
   }
 }

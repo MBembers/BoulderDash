@@ -74,6 +74,7 @@ export interface ITilePalette {
   clear: string;
   dirt: string;
   wall: string;
+  twall: string;
   boulder: string;
 }
 

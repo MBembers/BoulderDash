@@ -14,7 +14,7 @@ export default class Tile implements ITile {
     this.type = type;
     this.color = TilePalette[type as keyof ITilePalette];
     this.board = board;
-    this.sprite = "dirt";
+    this.sprite = type;
   }
 
   clear() {

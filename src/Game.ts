@@ -1,4 +1,5 @@
 import Boulder from "./Boulder";
+import { spritesheetCoords } from "./consts";
 import Diamond from "./Diamond";
 import Player from "./Player";
 import Tile from "./Tile";
@@ -30,8 +31,9 @@ export default class Game {
   cameraSpeed: number; // pixels per tick CHANGE THAT
   player: Player;
   moveInterval: NodeJS.Timer;
-  bImage: HTMLImageElement;
-  dImage: HTMLImageElement;
+
+  spritesheet: HTMLImageElement;
+  animationFrame: number;
 
   testCounter: number;
 
@@ -61,11 +63,10 @@ export default class Game {
     this.cameraSpeed = 10;
     this.board = [];
 
-    this.bImage = new Image();
-    this.bImage.src = "./assets/boulder.png";
+    this.spritesheet = new Image();
+    this.spritesheet.src = "./assets/sprites_1.png";
+    this.animationFrame = 0;
 
-    this.dImage = new Image();
-    this.dImage.src = "./assets/dirt.png";
     this.player = new Player(this.startX, this.startY, this.board);
 
     this.setCameraDest();
@@ -95,8 +96,8 @@ export default class Game {
           i === this.yTiles - 1 ||
           j === this.xTiles - 1
         )
-          this.board[i][j] = new Tile(j, i, "wall", this.board);
-        else if (i < 3)
+          this.board[i][j] = new Tile(j, i, "twall", this.board);
+        else if (i < 6)
           // else if (Math.random() < 0.12)
           this.board[i][j] = new Boulder(j, i, this.board);
         else if (Math.random() < 0.1)
@@ -113,29 +114,18 @@ export default class Game {
     this.setCameraDest();
     this.updateCamera();
     this.clearCanvas();
+    this.animations();
     for (let i = 0; i < this.yTiles; i++) {
       for (let j = 0; j < this.xTiles; j++) {
         let entity = this.board[i][j];
         let x = j * this.tileWidth + (this.canvasWidth / 2 - this.cameraX);
-        let y = i * this.tileHeight + (this.canvasHeight / 2 - this.cameraY);
+        let y =
+          i * this.tileHeight +
+          (this.canvasHeight / 2 - this.cameraY) +
+          this.topBarHeight;
 
-        if (entity.sprite === "boulder") {
-          // BETTER SPRITES
-          this.ctx.drawImage(
-            this.bImage as CanvasImageSource,
-            x,
-            y + this.topBarHeight,
-            this.tileWidth,
-            this.tileHeight
-          );
-        } else if (entity.type === "dirt") {
-          this.ctx.drawImage(
-            this.dImage as CanvasImageSource,
-            x,
-            y + this.topBarHeight,
-            this.tileWidth,
-            this.tileHeight
-          );
+        if (entity.sprite !== "none") {
+          this.drawSprite(entity.sprite, x, y);
         } else {
           // color
           this.ctx.fillStyle = entity.color;
@@ -196,5 +186,33 @@ export default class Game {
       this.canvasWidth,
       this.canvasHeight + this.topBarHeight
     );
+  }
+
+  drawSprite(sprite: string, x: number, y: number) {
+    const spriteCoords =
+      spritesheetCoords[sprite as keyof typeof spritesheetCoords];
+    this.ctx.drawImage(
+      this.spritesheet as CanvasImageSource,
+      spriteCoords[0],
+      spriteCoords[1],
+      32,
+      32,
+      x,
+      y,
+      this.tileWidth,
+      this.tileHeight
+    );
+  }
+
+  animations() {
+    for (let row of this.board) {
+      for (let entity of row) {
+        if (entity.type === "diamond") {
+          entity.sprite = "diamond" + this.animationFrame;
+        }
+      }
+    }
+    this.animationFrame += 1;
+    if (this.animationFrame > 7) this.animationFrame = 0;
   }
 }
