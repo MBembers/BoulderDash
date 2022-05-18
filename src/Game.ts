@@ -2,13 +2,8 @@ import Boulder from "./Boulder";
 import Diamond from "./Diamond";
 import Player from "./Player";
 import Tile from "./Tile";
+import Enemy from "./Enemy";
 import { Entity } from "./types";
-import {
-  getCornerNeighbours,
-  getNeighbours,
-  isBoulder,
-  isPhysicsBody,
-} from "./utils";
 
 export default class Game {
   canvasWidth: number;
@@ -101,7 +96,7 @@ export default class Game {
           j === this.xTiles - 1
         )
           this.board[i][j] = new Tile(j, i, "wall", this.board);
-        else if (i < 6)
+        else if (i < 3)
           // else if (Math.random() < 0.12)
           this.board[i][j] = new Boulder(j, i, this.board);
         else if (Math.random() < 0.1)
@@ -110,6 +105,8 @@ export default class Game {
       }
     }
     this.board[this.player.y][this.player.x] = this.player;
+    this.board[10][10] = new Enemy(10, 10, this.board, "left");
+    this.board[10][15] = new Enemy(15, 10, this.board, "right");
   }
 
   render() {

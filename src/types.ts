@@ -61,6 +61,15 @@ export interface IPhysicsBody {
   // fallInterval: NodeJS.Timer;
 }
 
+export interface IEnemy {
+  x: number;
+  y: number;
+  color: string;
+  sprite: string;
+  board: Entity[][];
+  type: string;
+}
+
 export interface ITilePalette {
   clear: string;
   dirt: string;
@@ -68,4 +77,11 @@ export interface ITilePalette {
   boulder: string;
 }
 
-export type Entity = ITile | IPhysicsBody | IPlayer;
+export interface IVelocity {
+  left: number;
+  right: number;
+  up: number;
+  down: number;
+}
+
+export type Entity = ITile | IPhysicsBody | IPlayer | IEnemy;
