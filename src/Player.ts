@@ -2,6 +2,7 @@ import Boulder from "./Boulder";
 import Tile from "./Tile";
 import { Entity, IPlayer } from "./types";
 import {
+  canPlayerMove,
   getCornerNeighbours,
   isBoulder,
   isDiamond,
@@ -16,6 +17,8 @@ export default class Player implements IPlayer {
   sprite: string;
   board: Entity[][];
   points: number;
+  lives: number;
+  diamonds: number;
   isMoving: boolean;
   moveInterval: NodeJS.Timer;
   pushTimeout: NodeJS.Timeout;
@@ -41,13 +44,8 @@ export default class Player implements IPlayer {
 
   checkMove(newX: number, newY: number) {
     let entity = this.board[newY][newX];
-    if (
-      entity.type === "wall" ||
-      entity.type === "twall" ||
-      (isPhysicsBody(entity) && entity.isMoving === true)
-    ) {
-      return;
-    }
+    if (canPlayerMove(entity)) return;
+
     if (isBoulder(entity)) {
       if (this.y === newY && !this.isPushing) {
         this.isPushing = true;
@@ -65,7 +63,7 @@ export default class Player implements IPlayer {
       }
     } else {
       if (isDiamond(entity)) {
-        this.points++;
+        this.diamonds++;
         document.title = this.points + " pts";
       }
       // moved

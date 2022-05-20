@@ -43,3 +43,10 @@ export function isPhysicsBody(entity: Entity): entity is PhysicsBody {
 export function isSlippery(entity: Entity): boolean {
   return isPhysicsBody(entity) || entity.type === "platform";
 }
+
+export function canPlayerMove(entity: Entity): boolean {
+  return (
+    ["wall", "twall", "mwall", "butterfly", "firefly"].includes(entity.type) ||
+    (isPhysicsBody(entity) && entity.isMoving === true)
+  );
+}

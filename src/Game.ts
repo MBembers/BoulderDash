@@ -62,7 +62,7 @@ export default class Game {
     this.boardHeight = this.yTiles * this.tileHeight;
     this.cameraDestX = this.cameraX;
     this.cameraDestY = this.cameraY;
-    this.cameraSpeed = 10;
+    this.cameraSpeed = 4;
     this.board = [];
 
     this.spritesheet = new Image();
@@ -83,7 +83,8 @@ export default class Game {
 
     this.createBoard();
     this.render();
-    setInterval(this.render.bind(this), 1000 / 24);
+    setInterval(this.render.bind(this), 1000 / 60);
+    setInterval(this.animations.bind(this), 1000 / 24);
   }
 
   createBoard() {
@@ -116,7 +117,6 @@ export default class Game {
     this.setCameraDest();
     this.updateCamera();
     this.clearCanvas();
-    this.animations();
     for (let i = 0; i < this.yTiles; i++) {
       for (let j = 0; j < this.xTiles; j++) {
         let entity = this.board[i][j];
