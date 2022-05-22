@@ -16,6 +16,7 @@ export default class PhysicsBody implements IPhysicsBody {
   color: string;
   sprite: string;
   isMoving: boolean;
+  timeout: NodeJS.Timeout;
   constructor(x: number, y: number, board: Entity[][]) {
     this.color = "blue";
     this.type = "physics-body";
@@ -23,11 +24,11 @@ export default class PhysicsBody implements IPhysicsBody {
     this.board = board;
     this.x = x;
     this.y = y;
-    this.checkForFall();
+    // this.checkForFall();
   }
 
   checkForFall() {
-    setTimeout(() => {
+    this.timeout = setTimeout(() => {
       let counter = 0;
       if (!this.fallInterval)
         this.fallInterval = setInterval(() => {
@@ -73,5 +74,10 @@ export default class PhysicsBody implements IPhysicsBody {
           counter++;
         }, 1000 / 8);
     }, 50);
+  }
+
+  delete() {
+    clearTimeout(this.timeout);
+    clearInterval(this.fallInterval);
   }
 }

@@ -32,6 +32,7 @@ export default class Player implements IPlayer {
     this.sprite = "player";
     this.board = board;
     this.points = 0;
+    this.diamonds = 0;
     this.isMoving = false;
     this.isPushing = false;
     this.listeners();
@@ -63,8 +64,9 @@ export default class Player implements IPlayer {
       }
     } else {
       if (isDiamond(entity)) {
+        entity.delete();
         this.diamonds++;
-        document.title = this.points + " pts";
+        document.title = this.diamonds + " pts";
       }
       // moved
       this.movePlayer(newX, newY);
@@ -74,9 +76,10 @@ export default class Player implements IPlayer {
   movePlayer(newX: number, newY: number) {
     let prevX = this.x;
     let prevY = this.y;
-    this.board[this.y][this.x] = new Tile(this.x, this.y, "clear", this.board);
+
     this.setPos(newX, newY);
     this.board[this.y][this.x] = this;
+    this.board[prevY][prevX] = new Tile(prevX, prevY, "clear", this.board);
 
     for (let e of getCornerNeighbours(prevX, prevY, this.board)) {
       if (isPhysicsBody(e)) {
@@ -95,7 +98,7 @@ export default class Player implements IPlayer {
           if (e.code === "ArrowLeft") this.checkMove(this.x - 1, this.y);
           if (e.code === "ArrowUp") this.checkMove(this.x, this.y - 1);
           if (e.code === "ArrowDown") this.checkMove(this.x, this.y + 1);
-        }, 1200 / 8);
+        }, 1000 / 8);
       }
     });
     document.addEventListener("keyup", (e) => {

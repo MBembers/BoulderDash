@@ -6,7 +6,7 @@ body {
   justify-content: center;
 }
 canvas {
-  border: 2px solid white;
+  border: 2px solid black;
   /*  for development */
   float: right;
 }
