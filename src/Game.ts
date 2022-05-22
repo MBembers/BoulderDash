@@ -47,6 +47,9 @@ export default class Game {
   renderInterval: NodeJS.Timer;
   animationInterval: NodeJS.Timer;
 
+  coverIndicator: number;
+  loading: string;
+
   constructor() {
     this.setup();
     // this.loadLevel();
@@ -66,6 +69,7 @@ export default class Game {
     this.level = 1;
     this.cave = "a";
     this.board = [];
+    this.player = new Player(0, 0, this.board);
 
     this.bgtile = document.createElement("img");
     this.title = document.createElement("img");
@@ -83,12 +87,6 @@ export default class Game {
     document.getElementById("main").appendChild(this.canvasHtml);
 
     this.ctx = this.canvasHtml.getContext("2d");
-
-    let amogus = "";
-    for (let sus = 0; sus < 40; sus++) {
-      amogus += "t";
-    }
-    console.log(amogus);
 
     window.addEventListener("keydown", (e) => {
       if (this.state === "menu") {
@@ -125,6 +123,8 @@ export default class Game {
 
     this.board = [];
 
+    if (this.state === "menu") this.player = new Player(0, 0, this.board);
+
     this.spritesheet.src = "./assets/sprites_1.png";
     this.animationFrame = 0;
 
@@ -160,7 +160,8 @@ export default class Game {
         else if (tile === "e")
           this.board[i][j] = new Tile(j, i, "otwall", this.board);
         else if (tile === "s") {
-          this.player = new Player(j, i, this.board);
+          this.player.setPos(j, i);
+          this.player.setBoard(this.board);
           this.board[i][j] = this.player;
         } else if (tile === "b") {
           this.board[i][j] = new Boulder(j, i, this.board);
@@ -169,11 +170,13 @@ export default class Game {
         }
       }
     }
-    for (let i = this.yTiles - 1; i >= 0; i--)
-      for (let j = 0; j < this.xTiles; j++) {
-        let cell = this.board[i][j];
-        if (isPhysicsBody(cell)) cell.checkForFall();
-      }
+    this.loading = "loading";
+    this.coverIndicator = 1000;
+    // for (let i = this.yTiles - 1; i >= 0; i--)
+    //   for (let j = 0; j < this.xTiles; j++) {
+    //     let cell = this.board[i][j];
+    //     if (isPhysicsBody(cell)) cell.checkForFall();
+    //   }
     this.cameraX = (this.tileWidth * this.xTiles) / 2;
     this.cameraY = (this.tileHeight * this.yTiles) / 2;
   }
@@ -208,7 +211,7 @@ export default class Game {
 
       this.drawText("  stages designed", "left", "w", 0, 288 + 33);
       this.drawText(" by mapasoft c 1984", "left", "w", 0, 288 + 49);
-      this.drawText("maciej bednarz 2022", "left", "w", 0, 288 + 65);
+      this.drawText("press button to play", "left", "w", 0, 288 + 65);
       this.drawText(`1 player 1 joystick`, "left", "w", 0, 288 + 81);
       this.drawText(
         ` cave: ${this.cave} level: ${this.level}`,
@@ -238,14 +241,18 @@ export default class Game {
             // tile
             this.ctx.fillRect(x, y, this.tileWidth, this.tileHeight);
           }
+          // if (this.loading === "loading") {
+          //   if (Math.random() < this.coverIndicator / 1000) {
+          //     this.drawSprite("twall", x, y - this.bgAnimation);
+          //   }
+          // }
         }
       }
-
-      // this.ctx.fillStyle = "hsl(0, 0%, 0%, 50%)";
-      // this.ctx.fillRect(0, 0, this.canvasWidth, this.canvasHeight); // PRZYCIEMNIENIE
-
       this.ctx.fillStyle = "hsl(0, 0%, 0%)";
       this.ctx.fillRect(0, 0, this.canvasWidth, this.topBarHeight);
+
+      // this.coverIndicator -= 5;
+      // if (this.coverIndicator < 100) this.loading = "none";
     }
   }
 
@@ -315,7 +322,6 @@ export default class Game {
     if (align === "right") x = x - text.length * 32;
     for (let i = 0; i < text.length; i++) {
       let code = text.charCodeAt(i);
-      // console.log(num);
       if (code >= 48 && code <= 59) {
         let num = code - 48;
         this.drawSprite(color + "Sm0", x + i * 32, y, 0, num * 16);
@@ -338,7 +344,7 @@ export default class Game {
       }
     this.animationFrame += 1;
     if (this.animationFrame > 7) this.animationFrame = 0;
-    this.bgAnimation += 1;
+    this.bgAnimation += 2;
     if (this.bgAnimation > 15) this.bgAnimation = 0;
   }
 }

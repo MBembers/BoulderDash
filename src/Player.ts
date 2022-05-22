@@ -33,6 +33,7 @@ export default class Player implements IPlayer {
     this.board = board;
     this.points = 0;
     this.diamonds = 0;
+    this.lives = 3;
     this.isMoving = false;
     this.isPushing = false;
     this.listeners();
@@ -41,6 +42,10 @@ export default class Player implements IPlayer {
   setPos(x: number, y: number) {
     this.x = x;
     this.y = y;
+  }
+
+  setBoard(board: Entity[][]) {
+    this.board = board;
   }
 
   checkMove(newX: number, newY: number) {
