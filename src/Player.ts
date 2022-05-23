@@ -36,7 +36,7 @@ export default class Player implements IPlayer {
     this.lives = 3;
     this.isMoving = false;
     this.isPushing = false;
-    this.listeners();
+    // this.listeners();
   }
 
   setPos(x: number, y: number) {

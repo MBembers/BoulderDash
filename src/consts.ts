@@ -119,6 +119,7 @@ export const spritesheetCoords = {
 
   clear: [32 * 5, 32 * 15],
   twall: [32 * 1, 32 * 6],
+  ltwall: [32 * 1, 32 * 6],
   otwall: [32 * 2, 32 * 6],
   wall: [32 * 3, 32 * 6],
   mwall0: [32 * 4, 32 * 6],

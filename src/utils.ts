@@ -50,3 +50,7 @@ export function canPlayerMove(entity: Entity): boolean {
     (isPhysicsBody(entity) && entity.isMoving === true)
   );
 }
+
+export function compareCoords(a: Entity, b: Entity): boolean {
+  return a.x === b.x && a.y === b.y;
+}

@@ -8,7 +8,7 @@ import { Entity } from "./types";
 import Butterfly from "./Butterfly";
 import Firefly from "./Firefly";
 import { maps } from "./maps";
-import { isPhysicsBody } from "./utils";
+import { compareCoords, isPhysicsBody } from "./utils";
 
 export default class Game {
   canvasWidth: number;
@@ -35,20 +35,21 @@ export default class Game {
 
   spritesheet: HTMLImageElement;
   animationFrame: number;
+  bgAnimation: number;
+  deathAnimation: string;
+  animationInterval: NodeJS.Timer;
+  renderInterval: NodeJS.Timer;
 
   testCounter: number;
   bgtile: HTMLImageElement;
   title: HTMLImageElement;
   state: string;
-  bgAnimation: number;
-
   cave: string;
   level: number;
-  renderInterval: NodeJS.Timer;
-  animationInterval: NodeJS.Timer;
 
   coverIndicator: number;
   loading: string;
+  map: string;
 
   constructor() {
     this.setup();
@@ -136,47 +137,25 @@ export default class Game {
   }
 
   createBoard() {
-    const map = maps[(this.cave + "_" + this.level) as keyof typeof maps];
-    if (map.length !== 40 * 22) {
+    this.map = maps[(this.cave + "_" + this.level) as keyof typeof maps];
+    if (this.map.length !== 40 * 22) {
       console.log("bad map");
+      this.state = "menu";
+      this.loading = "none";
       return;
     }
     for (let i = 0; i < this.yTiles; i++) {
       this.board.push(new Array(this.xTiles));
       for (let j = 0; j < this.xTiles; j++) {
-        let index = i * 40 + j;
-        let tile = map[index];
-        if (tile === "t")
-          this.board[i][j] = new Tile(j, i, "twall", this.board);
-        else if (tile === "x")
-          this.board[i][j] = new Tile(j, i, "dirt", this.board);
-        else if (tile === "c")
-          this.board[i][j] = new Tile(j, i, "clear", this.board);
-        else if (tile === "w")
-          this.board[i][j] = new Tile(j, i, "wall", this.board);
-        else if (tile === "f") this.board[i][j] = new Firefly(j, i, this.board);
-        else if (tile === "u")
-          this.board[i][j] = new Butterfly(j, i, this.board);
-        else if (tile === "e")
-          this.board[i][j] = new Tile(j, i, "otwall", this.board);
-        else if (tile === "s") {
+        this.board[i][j] = new Tile(j, i, "ltwall", this.board);
+        if (this.map[i * 40 + j] === "s") {
           this.player.setPos(j, i);
           this.player.setBoard(this.board);
-          this.board[i][j] = this.player;
-        } else if (tile === "b") {
-          this.board[i][j] = new Boulder(j, i, this.board);
-        } else if (tile === "d") {
-          this.board[i][j] = new Diamond(j, i, this.board);
         }
       }
     }
     this.loading = "loading";
     this.coverIndicator = 1000;
-    // for (let i = this.yTiles - 1; i >= 0; i--)
-    //   for (let j = 0; j < this.xTiles; j++) {
-    //     let cell = this.board[i][j];
-    //     if (isPhysicsBody(cell)) cell.checkForFall();
-    //   }
     this.cameraX = (this.tileWidth * this.xTiles) / 2;
     this.cameraY = (this.tileHeight * this.yTiles) / 2;
   }
@@ -232,7 +211,10 @@ export default class Game {
             (this.canvasHeight / 2 - this.cameraY) +
             this.topBarHeight;
 
-          if (entity.sprite !== "none") {
+          if (entity.type === "ltwall" && this.loading === "loading") {
+            this.drawSprite(entity.sprite, x, y - this.bgAnimation);
+            this.drawSprite(entity.sprite, x, y + 32 - this.bgAnimation);
+          } else if (entity.sprite !== "none") {
             this.drawSprite(entity.sprite, x, y);
           } else {
             // color
@@ -241,18 +223,10 @@ export default class Game {
             // tile
             this.ctx.fillRect(x, y, this.tileWidth, this.tileHeight);
           }
-          // if (this.loading === "loading") {
-          //   if (Math.random() < this.coverIndicator / 1000) {
-          //     this.drawSprite("twall", x, y - this.bgAnimation);
-          //   }
-          // }
         }
       }
       this.ctx.fillStyle = "hsl(0, 0%, 0%)";
       this.ctx.fillRect(0, 0, this.canvasWidth, this.topBarHeight);
-
-      // this.coverIndicator -= 5;
-      // if (this.coverIndicator < 100) this.loading = "none";
     }
   }
 
@@ -340,11 +314,70 @@ export default class Game {
           if (["diamond", "firefly", "butterfly"].includes(entity.type)) {
             entity.sprite = entity.type + this.animationFrame;
           }
+          if (
+            entity.type === "otwall" &&
+            compareCoords(entity, this.player) &&
+            this.coverIndicator < 800
+          ) {
+            if (this.animationFrame < 4) entity.sprite = "otwall";
+            else entity.sprite = "twall";
+          }
         }
       }
     this.animationFrame += 1;
     if (this.animationFrame > 7) this.animationFrame = 0;
     this.bgAnimation += 2;
     if (this.bgAnimation > 15) this.bgAnimation = 0;
+
+    if (this.loading === "loading") {
+      for (let i = 0; i < this.yTiles; i++) {
+        for (let j = 0; j < this.xTiles; j++) {
+          let index = i * 40 + j;
+          let tile = this.map[index];
+          if (
+            this.board[i][j].type === "ltwall" &&
+            (this.coverIndicator < 600 ||
+              Math.random() > this.coverIndicator / 1000)
+          ) {
+            if (tile === "t")
+              this.board[i][j] = new Tile(j, i, "twall", this.board);
+            else if (tile === "x")
+              this.board[i][j] = new Tile(j, i, "dirt", this.board);
+            else if (tile === "c")
+              this.board[i][j] = new Tile(j, i, "clear", this.board);
+            else if (tile === "w")
+              this.board[i][j] = new Tile(j, i, "wall", this.board);
+            else if (tile === "f")
+              this.board[i][j] = new Firefly(j, i, this.board);
+            else if (tile === "u")
+              this.board[i][j] = new Butterfly(j, i, this.board);
+            else if (tile === "e")
+              this.board[i][j] = new Tile(j, i, "otwall", this.board);
+            else if (tile === "s") {
+              this.player.setPos(j, i);
+              this.player.setBoard(this.board);
+              this.board[i][j] = new Tile(j, i, "otwall", this.board);
+            } else if (tile === "b") {
+              this.board[i][j] = new Boulder(j, i, this.board);
+            } else if (tile === "d") {
+              this.board[i][j] = new Diamond(j, i, this.board);
+            }
+          }
+        }
+      }
+    }
+
+    this.coverIndicator -= 4;
+    if (this.coverIndicator < 700) {
+      this.loading = "none";
+      this.coverIndicator = 0;
+      this.board[this.player.y][this.player.x] = this.player;
+      for (let i = this.yTiles - 1; i >= 0; i--)
+        for (let j = 0; j < this.xTiles; j++) {
+          let cell = this.board[i][j];
+          if (isPhysicsBody(cell)) cell.checkForFall();
+        }
+      this.player.listeners();
+    }
   }
 }
