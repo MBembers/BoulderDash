@@ -23,6 +23,8 @@ export default class Player implements IPlayer {
   moveInterval: NodeJS.Timer;
   pushTimeout: NodeJS.Timeout;
   isPushing: boolean;
+  move: string;
+  state: string;
 
   constructor(x: number, y: number, board: Entity[][]) {
     this.x = x;
@@ -30,13 +32,14 @@ export default class Player implements IPlayer {
     this.color = "red";
     this.type = "player";
     this.sprite = "player";
+    this.state = "idle";
+    this.move = "none";
     this.board = board;
     this.points = 0;
     this.diamonds = 0;
     this.lives = 3;
     this.isMoving = false;
     this.isPushing = false;
-    // this.listeners();
   }
 
   setPos(x: number, y: number) {
@@ -71,7 +74,11 @@ export default class Player implements IPlayer {
       if (isDiamond(entity)) {
         entity.delete();
         this.diamonds++;
-        document.title = this.diamonds + " pts";
+        this.points += 10;
+        if (this.points % 500 === 0 && this.points > 0) {
+          this.lives++;
+        }
+        document.title = this.lives + " l";
       }
       // moved
       this.movePlayer(newX, newY);
@@ -93,16 +100,37 @@ export default class Player implements IPlayer {
     }
   }
 
+  hit() {
+    this.lives--;
+    document.title = this.lives + " l";
+  }
+
   listeners() {
     document.addEventListener("keydown", (e) => {
       // console.log(e.code);
       if (!this.isMoving) {
         this.isMoving = true;
         this.moveInterval = setInterval(() => {
-          if (e.code === "ArrowRight") this.checkMove(this.x + 1, this.y);
-          if (e.code === "ArrowLeft") this.checkMove(this.x - 1, this.y);
-          if (e.code === "ArrowUp") this.checkMove(this.x, this.y - 1);
-          if (e.code === "ArrowDown") this.checkMove(this.x, this.y + 1);
+          if (e.code === "ArrowRight") {
+            this.checkMove(this.x + 1, this.y);
+            this.state = "move";
+            this.move = "runright";
+          }
+          if (e.code === "ArrowLeft") {
+            this.checkMove(this.x - 1, this.y);
+            this.state = "move";
+            this.move = "runleft";
+          }
+          if (e.code === "ArrowUp") {
+            this.checkMove(this.x, this.y - 1);
+            this.state = "move";
+            if (this.move === "none") this.move = "runright";
+          }
+          if (e.code === "ArrowDown") {
+            this.checkMove(this.x, this.y + 1);
+            this.state = "move";
+            if (this.move === "none") this.move = "runright";
+          }
         }, 1000 / 8);
       }
     });
@@ -112,6 +140,7 @@ export default class Player implements IPlayer {
       this.isMoving = false;
       clearTimeout(this.pushTimeout);
       this.isPushing = false;
+      this.state = "normal";
     });
   }
 }

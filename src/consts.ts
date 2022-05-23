@@ -79,8 +79,8 @@ export const spritesheetCoords = {
   foot5: [32 * 5, 32 * 2],
   foot6: [32 * 6, 32 * 2],
   foot7: [32 * 7, 32 * 2],
-  dwSm: [32 * 8, 32 * 2],
-  dySm: [32 * 9, 32 * 2],
+  dwSm: [32 * 8, 32 * 2 + 2],
+  dySm: [32 * 9, 32 * 2 + 2],
 
   footblink0: [32 * 0, 32 * 3],
   footblink1: [32 * 1, 32 * 3],

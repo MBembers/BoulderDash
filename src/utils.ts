@@ -1,6 +1,7 @@
 import Boulder from "./Boulder";
 import Diamond from "./Diamond";
 import PhysicsBody from "./PhysicsBody";
+import Player from "./Player";
 import { Entity } from "./types";
 
 export function getNeighbours(
@@ -34,6 +35,10 @@ export function isBoulder(entity: Entity): entity is Boulder {
 
 export function isDiamond(entity: Entity): entity is Diamond {
   return entity.type === "diamond";
+}
+
+export function isPlayer(entity: Entity): entity is Player {
+  return entity.type === "player";
 }
 
 export function isPhysicsBody(entity: Entity): entity is PhysicsBody {

@@ -36,7 +36,7 @@ export default class Game {
   spritesheet: HTMLImageElement;
   animationFrame: number;
   bgAnimation: number;
-  deathAnimation: string;
+  deathAnimation: number;
   animationInterval: NodeJS.Timer;
   renderInterval: NodeJS.Timer;
 
@@ -50,6 +50,8 @@ export default class Game {
   coverIndicator: number;
   loading: string;
   map: string;
+  time: number;
+  timeInterval: NodeJS.Timer;
 
   constructor() {
     this.setup();
@@ -155,6 +157,7 @@ export default class Game {
       }
     }
     this.loading = "loading";
+    this.time = 150;
     this.coverIndicator = 1000;
     this.cameraX = (this.tileWidth * this.xTiles) / 2;
     this.cameraY = (this.tileHeight * this.yTiles) / 2;
@@ -227,7 +230,136 @@ export default class Game {
       }
       this.ctx.fillStyle = "hsl(0, 0%, 0%)";
       this.ctx.fillRect(0, 0, this.canvasWidth, this.topBarHeight);
+      if (this.loading === "none") {
+        this.drawText(` 20`, "left", "y", 0, 0);
+        this.drawSprite("dwSm", 96, 0);
+        this.drawText(`20`, "left", "w", 128, 0);
+        this.drawText(
+          ` ${this.player.diamonds.toString().padStart(2, "0")} ${this.time
+            .toString()
+            .padStart(3, "0")} ${this.player.points
+            .toString()
+            .padStart(6, "0")}`,
+          "left",
+          "w",
+          192,
+          0
+        );
+      } else if (this.loading === "loading") {
+        this.drawText(
+          `player 1, ${this.player.lives} men ${this.cave}/${this.level}`,
+          "left",
+          "w",
+          0,
+          0
+        );
+      }
     }
+  }
+
+  animations() {
+    if (
+      this.coverIndicator < 700 &&
+      this.coverIndicator > 695 &&
+      this.loading === "loading"
+    ) {
+      this.deathAnimation = 0;
+      this.board[this.player.y][this.player.x] = this.player;
+      for (let i = this.yTiles - 1; i >= 0; i--)
+        for (let j = 0; j < this.xTiles; j++) {
+          let cell = this.board[i][j];
+          if (isPhysicsBody(cell)) cell.checkForFall();
+        }
+    }
+    if (this.deathAnimation === 3) {
+      this.loading = "none";
+      this.coverIndicator = 0;
+      this.deathAnimation = 0;
+      this.player.listeners();
+      this.timeCounter();
+    }
+
+    if (this.board.length > 0)
+      for (let row of this.board) {
+        for (let entity of row) {
+          if (["diamond", "firefly", "butterfly"].includes(entity.type)) {
+            entity.sprite = entity.type + this.animationFrame;
+          }
+          if (entity.type === "player") {
+            entity.sprite = "player";
+            if (this.player.state === "move") {
+              entity.sprite = this.player.move + this.animationFrame;
+            }
+          }
+          if (
+            entity.type === "otwall" &&
+            compareCoords(entity, this.player) &&
+            this.coverIndicator < 800
+          ) {
+            if (this.animationFrame < 4) entity.sprite = "otwall";
+            else entity.sprite = "twall";
+          }
+          if (
+            entity.type === "player" &&
+            this.loading === "loading" &&
+            this.coverIndicator < 700
+          ) {
+            this.player.sprite = "death" + this.deathAnimation;
+            this.deathAnimation++;
+          }
+        }
+      }
+    this.animationFrame += 1;
+    if (this.animationFrame > 7) this.animationFrame = 0;
+    this.bgAnimation += 2;
+    if (this.bgAnimation > 15) this.bgAnimation = 0;
+
+    if (this.loading === "loading") {
+      for (let i = 0; i < this.yTiles; i++) {
+        for (let j = 0; j < this.xTiles; j++) {
+          let index = i * 40 + j;
+          let tile = this.map[index];
+          if (
+            this.board[i][j].type === "ltwall" &&
+            (this.coverIndicator < 600 ||
+              Math.random() > this.coverIndicator / 1000)
+          ) {
+            if (tile === "t")
+              this.board[i][j] = new Tile(j, i, "twall", this.board);
+            else if (tile === "x")
+              this.board[i][j] = new Tile(j, i, "dirt", this.board);
+            else if (tile === "c")
+              this.board[i][j] = new Tile(j, i, "clear", this.board);
+            else if (tile === "w")
+              this.board[i][j] = new Tile(j, i, "wall", this.board);
+            else if (tile === "f")
+              this.board[i][j] = new Firefly(j, i, this.board);
+            else if (tile === "u")
+              this.board[i][j] = new Butterfly(j, i, this.board);
+            else if (tile === "e")
+              this.board[i][j] = new Tile(j, i, "otwall", this.board);
+            else if (tile === "s") {
+              this.player.setPos(j, i);
+              this.player.setBoard(this.board);
+              this.board[i][j] = new Tile(j, i, "otwall", this.board);
+            } else if (tile === "b") {
+              this.board[i][j] = new Boulder(j, i, this.board);
+            } else if (tile === "d") {
+              this.board[i][j] = new Diamond(j, i, this.board);
+            }
+          }
+        }
+      }
+    }
+
+    this.coverIndicator -= 4;
+  }
+
+  timeCounter() {
+    this.timeInterval = setInterval(() => {
+      this.time--;
+      if (this.time < 0) clearInterval(this.timeInterval);
+    }, 1000);
   }
 
   setCameraDest() {
@@ -304,80 +436,6 @@ export default class Game {
         if (text[i] !== " ")
           this.drawSprite(color + "Sma", x + i * 32, y, 0, num * 16);
       }
-    }
-  }
-
-  animations() {
-    if (this.board.length > 0)
-      for (let row of this.board) {
-        for (let entity of row) {
-          if (["diamond", "firefly", "butterfly"].includes(entity.type)) {
-            entity.sprite = entity.type + this.animationFrame;
-          }
-          if (
-            entity.type === "otwall" &&
-            compareCoords(entity, this.player) &&
-            this.coverIndicator < 800
-          ) {
-            if (this.animationFrame < 4) entity.sprite = "otwall";
-            else entity.sprite = "twall";
-          }
-        }
-      }
-    this.animationFrame += 1;
-    if (this.animationFrame > 7) this.animationFrame = 0;
-    this.bgAnimation += 2;
-    if (this.bgAnimation > 15) this.bgAnimation = 0;
-
-    if (this.loading === "loading") {
-      for (let i = 0; i < this.yTiles; i++) {
-        for (let j = 0; j < this.xTiles; j++) {
-          let index = i * 40 + j;
-          let tile = this.map[index];
-          if (
-            this.board[i][j].type === "ltwall" &&
-            (this.coverIndicator < 600 ||
-              Math.random() > this.coverIndicator / 1000)
-          ) {
-            if (tile === "t")
-              this.board[i][j] = new Tile(j, i, "twall", this.board);
-            else if (tile === "x")
-              this.board[i][j] = new Tile(j, i, "dirt", this.board);
-            else if (tile === "c")
-              this.board[i][j] = new Tile(j, i, "clear", this.board);
-            else if (tile === "w")
-              this.board[i][j] = new Tile(j, i, "wall", this.board);
-            else if (tile === "f")
-              this.board[i][j] = new Firefly(j, i, this.board);
-            else if (tile === "u")
-              this.board[i][j] = new Butterfly(j, i, this.board);
-            else if (tile === "e")
-              this.board[i][j] = new Tile(j, i, "otwall", this.board);
-            else if (tile === "s") {
-              this.player.setPos(j, i);
-              this.player.setBoard(this.board);
-              this.board[i][j] = new Tile(j, i, "otwall", this.board);
-            } else if (tile === "b") {
-              this.board[i][j] = new Boulder(j, i, this.board);
-            } else if (tile === "d") {
-              this.board[i][j] = new Diamond(j, i, this.board);
-            }
-          }
-        }
-      }
-    }
-
-    this.coverIndicator -= 4;
-    if (this.coverIndicator < 700) {
-      this.loading = "none";
-      this.coverIndicator = 0;
-      this.board[this.player.y][this.player.x] = this.player;
-      for (let i = this.yTiles - 1; i >= 0; i--)
-        for (let j = 0; j < this.xTiles; j++) {
-          let cell = this.board[i][j];
-          if (isPhysicsBody(cell)) cell.checkForFall();
-        }
-      this.player.listeners();
     }
   }
 }

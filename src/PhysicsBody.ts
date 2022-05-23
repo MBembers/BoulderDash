@@ -4,6 +4,7 @@ import {
   getCornerNeighbours,
   getNeighbours,
   isPhysicsBody,
+  isPlayer,
   isSlippery,
 } from "./utils";
 
@@ -17,6 +18,7 @@ export default class PhysicsBody implements IPhysicsBody {
   sprite: string;
   isMoving: boolean;
   timeout: NodeJS.Timeout;
+  fallcount: number;
   constructor(x: number, y: number, board: Entity[][]) {
     this.color = "blue";
     this.type = "physics-body";
@@ -24,6 +26,7 @@ export default class PhysicsBody implements IPhysicsBody {
     this.board = board;
     this.x = x;
     this.y = y;
+    this.fallcount = 0;
     // this.checkForFall();
   }
 
@@ -36,6 +39,9 @@ export default class PhysicsBody implements IPhysicsBody {
           let neighbours = getNeighbours(this.x, this.y, this.board);
           let moved = false;
           for (let neighbour of neighbours) {
+            if (neighbour.y > this.y) {
+              if (isPlayer(neighbour) && this.fallcount > 0) neighbour.hit();
+            }
             if (
               (neighbour.y > this.y || // is below
                 (neighbour.y === this.y && // is the same y
@@ -51,6 +57,7 @@ export default class PhysicsBody implements IPhysicsBody {
                 this.board
               );
               moved = true;
+              this.fallcount++;
               for (let entity of getCornerNeighbours(
                 this.x,
                 this.y,
@@ -67,6 +74,7 @@ export default class PhysicsBody implements IPhysicsBody {
             }
           }
           if (!moved && counter >= 0) {
+            this.fallcount = 0;
             clearInterval(this.fallInterval);
             this.fallInterval = undefined;
             this.isMoving = false;

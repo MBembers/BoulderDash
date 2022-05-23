@@ -1,12 +1,13 @@
 body {
-  background-color: hsl(200, 70%, 20%);
+  background-color: hsl(200, 70%, 0%);
 }
 .container {
   display: flex;
   justify-content: center;
 }
 canvas {
-  border: 2px solid black;
+  /* border: 2px solid black; */
   /*  for development */
   float: right;
+  margin-top: 150px;
 }
