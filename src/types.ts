@@ -32,6 +32,7 @@ export interface IPlayer {
   color: string;
   sprite: string;
   board: Entity[][];
+  animation: number;
 }
 
 export interface ITile {
@@ -40,6 +41,7 @@ export interface ITile {
   type: string;
   color: string;
   sprite: string;
+  animation: number;
 }
 
 export interface IBoulder extends IPhysicsBody {
@@ -58,6 +60,7 @@ export interface IPhysicsBody {
   sprite: string;
   board: Entity[][];
   type: string;
+  animation: number;
   // fallInterval: NodeJS.Timer;
 }
 
@@ -68,6 +71,7 @@ export interface IEnemy {
   sprite: string;
   board: Entity[][];
   type: string;
+  animation: number;
 }
 
 export interface ITilePalette {

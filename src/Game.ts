@@ -1,5 +1,5 @@
 import Boulder from "./Boulder";
-import { spritesheetCoords } from "./consts";
+import { playerDeath, spritesheetCoords } from "./consts";
 import Diamond from "./Diamond";
 import Player from "./Player";
 import Tile from "./Tile";
@@ -52,6 +52,7 @@ export default class Game {
   map: string;
   time: number;
   timeInterval: NodeJS.Timer;
+  mapGoal: number;
 
   constructor() {
     this.setup();
@@ -81,7 +82,7 @@ export default class Game {
     this.bgAnimation = 0;
 
     this.spritesheet = new Image();
-    this.spritesheet.src = "./assets/sprites_1.png";
+    this.spritesheet.src = `./assets/sprites_${this.cave}.png`;
 
     this.canvasHtml = document.createElement("canvas") as HTMLCanvasElement;
     this.canvasHtml.width = this.canvasWidth;
@@ -96,7 +97,7 @@ export default class Game {
         if (e.code === "ArrowRight") {
           let code = this.cave.charCodeAt(0);
           code++;
-          if (code > 109) code = 109;
+          if (code > 109) code = 112;
           this.cave = String.fromCharCode(code);
         }
         if (e.code === "ArrowLeft") {
@@ -110,6 +111,11 @@ export default class Game {
         if (this.level < 1) this.level = 1;
         if (this.level > 3) this.level = 3;
         if (e.code === "Space") this.loadLevel();
+      } else if (this.state === "level") {
+        if (e.code === "Escape") {
+          if (this.player.state !== "dying") this.player.lives--;
+          this.loadLevel();
+        }
       }
     });
 
@@ -128,7 +134,7 @@ export default class Game {
 
     if (this.state === "menu") this.player = new Player(0, 0, this.board);
 
-    this.spritesheet.src = "./assets/sprites_1.png";
+    this.spritesheet.src = `./assets/sprites_${this.cave}.png`;
     this.animationFrame = 0;
 
     // clearInterval(this.renderInterval);
@@ -140,8 +146,13 @@ export default class Game {
 
   createBoard() {
     this.map = maps[(this.cave + "_" + this.level) as keyof typeof maps];
+    this.player.value = parseInt(this.map.split(";")[0].split("-")[1]);
+    this.mapGoal = parseInt(this.map.split(";")[0].split("-")[0]);
+    this.player.currGoal = this.mapGoal;
+    this.map = this.map.split(";")[1];
     if (this.map.length !== 40 * 22) {
       console.log("bad map");
+
       this.state = "menu";
       this.loading = "none";
       return;
@@ -151,13 +162,14 @@ export default class Game {
       for (let j = 0; j < this.xTiles; j++) {
         this.board[i][j] = new Tile(j, i, "ltwall", this.board);
         if (this.map[i * 40 + j] === "s") {
-          this.player.setPos(j, i);
+          this.player.levelSetup(j, i);
           this.player.setBoard(this.board);
         }
       }
     }
     this.loading = "loading";
     this.time = 150;
+    if (this.timeInterval) clearInterval(this.timeInterval);
     this.coverIndicator = 1000;
     this.cameraX = (this.tileWidth * this.xTiles) / 2;
     this.cameraY = (this.tileHeight * this.yTiles) / 2;
@@ -275,10 +287,11 @@ export default class Game {
       this.loading = "none";
       this.coverIndicator = 0;
       this.deathAnimation = 0;
-      this.player.listeners();
+      this.player.state = "normal";
       this.timeCounter();
     }
 
+    // CORE ANIMATIONS
     if (this.board.length > 0)
       for (let row of this.board) {
         for (let entity of row) {
@@ -306,6 +319,16 @@ export default class Game {
           ) {
             this.player.sprite = "death" + this.deathAnimation;
             this.deathAnimation++;
+          }
+          if (entity.type === "death") {
+            if (Number.isInteger(entity.animation))
+              entity.sprite = playerDeath[entity.animation];
+            entity.animation += 0.5;
+            if (entity.animation >= playerDeath.length - 1) {
+              entity.type = "clear";
+              entity.sprite = "clear";
+              entity.animation = 0;
+            }
           }
         }
       }
@@ -337,7 +360,7 @@ export default class Game {
             else if (tile === "u")
               this.board[i][j] = new Butterfly(j, i, this.board);
             else if (tile === "e")
-              this.board[i][j] = new Tile(j, i, "otwall", this.board);
+              this.board[i][j] = new Tile(j, i, "end", this.board);
             else if (tile === "s") {
               this.player.setPos(j, i);
               this.player.setBoard(this.board);
@@ -353,9 +376,15 @@ export default class Game {
     }
 
     this.coverIndicator -= 4;
+
+    if (this.player.lives === 0) {
+      this.state = "menu";
+      this.player.state = "dying";
+    }
   }
 
   timeCounter() {
+    clearInterval(this.timeInterval);
     this.timeInterval = setInterval(() => {
       this.time--;
       if (this.time < 0) clearInterval(this.timeInterval);

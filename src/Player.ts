@@ -25,21 +25,35 @@ export default class Player implements IPlayer {
   isPushing: boolean;
   move: string;
   state: string;
+  animation: number;
+  value: number;
+  currGoal: number;
 
   constructor(x: number, y: number, board: Entity[][]) {
+    this.board = board;
+    this.setup(x, y);
+    this.listeners();
+  }
+
+  setup(x: number, y: number) {
+    this.levelSetup(x, y);
+    this.color = "red";
+    this.points = 0;
+    this.lives = 3;
+    this.value = 10;
+  }
+
+  levelSetup(x: number, y: number) {
     this.x = x;
     this.y = y;
-    this.color = "red";
     this.type = "player";
     this.sprite = "player";
-    this.state = "idle";
+    this.state = "loading";
     this.move = "none";
-    this.board = board;
-    this.points = 0;
-    this.diamonds = 0;
-    this.lives = 3;
     this.isMoving = false;
     this.isPushing = false;
+    this.animation = 0;
+    this.diamonds = 0;
   }
 
   setPos(x: number, y: number) {
@@ -74,11 +88,14 @@ export default class Player implements IPlayer {
       if (isDiamond(entity)) {
         entity.delete();
         this.diamonds++;
-        this.points += 10;
+        this.points += this.value;
         if (this.points % 500 === 0 && this.points > 0) {
           this.lives++;
         }
         document.title = this.lives + " l";
+      }
+      if (entity.type === "end" && this.currGoal > this.diamonds) {
+        return;
       }
       // moved
       this.movePlayer(newX, newY);
@@ -101,46 +118,68 @@ export default class Player implements IPlayer {
   }
 
   hit() {
+    this.animation = 0;
+    this.state = "dying";
     this.lives--;
     document.title = this.lives + " l";
+
+    let neighbours = getCornerNeighbours(this.x, this.y, this.board);
+    neighbours.push(this.board[this.y][this.x]);
+    for (let neighbour of neighbours) {
+      if (neighbour.type !== "twall")
+        this.board[neighbour.y][neighbour.x] = new Tile(
+          neighbour.x,
+          neighbour.y,
+          "death",
+          this.board
+        );
+      this.board[neighbour.y][neighbour.x].sprite = "clear";
+    }
+  }
+
+  canMove() {
+    return !this.isMoving && this.state !== "dying" && this.state !== "loading";
   }
 
   listeners() {
     document.addEventListener("keydown", (e) => {
       // console.log(e.code);
-      if (!this.isMoving) {
+      if (this.canMove()) {
         this.isMoving = true;
         this.moveInterval = setInterval(() => {
-          if (e.code === "ArrowRight") {
-            this.checkMove(this.x + 1, this.y);
-            this.state = "move";
-            this.move = "runright";
-          }
-          if (e.code === "ArrowLeft") {
-            this.checkMove(this.x - 1, this.y);
-            this.state = "move";
-            this.move = "runleft";
-          }
-          if (e.code === "ArrowUp") {
-            this.checkMove(this.x, this.y - 1);
-            this.state = "move";
-            if (this.move === "none") this.move = "runright";
-          }
-          if (e.code === "ArrowDown") {
-            this.checkMove(this.x, this.y + 1);
-            this.state = "move";
-            if (this.move === "none") this.move = "runright";
+          if (this.state !== "dying") {
+            if (e.code === "ArrowRight") {
+              this.checkMove(this.x + 1, this.y);
+              this.state = "move";
+              this.move = "runright";
+            }
+            if (e.code === "ArrowLeft") {
+              this.checkMove(this.x - 1, this.y);
+              this.state = "move";
+              this.move = "runleft";
+            }
+            if (e.code === "ArrowUp") {
+              this.checkMove(this.x, this.y - 1);
+              this.state = "move";
+              if (this.move === "none") this.move = "runright";
+            }
+            if (e.code === "ArrowDown") {
+              this.checkMove(this.x, this.y + 1);
+              this.state = "move";
+              if (this.move === "none") this.move = "runright";
+            }
           }
         }, 1000 / 8);
       }
     });
     document.addEventListener("keyup", (e) => {
-      // console.log("BREAK:", e.code);
       clearInterval(this.moveInterval);
-      this.isMoving = false;
       clearTimeout(this.pushTimeout);
+      this.isMoving = false;
       this.isPushing = false;
-      this.state = "normal";
+      if (this.canMove()) {
+        this.state = "normal";
+      }
     });
   }
 }

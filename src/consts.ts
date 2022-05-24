@@ -48,6 +48,16 @@ export const testColors: string[] = [
   "hsl(160, 30%, 20%)",
 ];
 
+export const playerDeath: string[] = [
+  "death1",
+  "death2",
+  "death1",
+  "death0",
+  "clear",
+];
+
+export const caves: string = "abcdefghijklmnop";
+
 export const spritesheetCoords = {
   player: [32 * 0, 32 * 0],
   death0: [32 * 1, 32 * 0],

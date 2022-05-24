@@ -8,6 +8,7 @@ export default class Tile implements ITile {
   color: string;
   sprite: string;
   board: Entity[][];
+  animation: number;
   constructor(x: number, y: number, type: string, board: Entity[][]) {
     this.x = x;
     this.y = y;
@@ -15,6 +16,8 @@ export default class Tile implements ITile {
     this.color = TilePalette[type as keyof ITilePalette];
     this.board = board;
     this.sprite = type;
+    if (type === "end") this.sprite = "twall";
+    this.animation = 0;
   }
 
   clear() {

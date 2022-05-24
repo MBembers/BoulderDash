@@ -19,6 +19,7 @@ export default class PhysicsBody implements IPhysicsBody {
   isMoving: boolean;
   timeout: NodeJS.Timeout;
   fallcount: number;
+  animation: number;
   constructor(x: number, y: number, board: Entity[][]) {
     this.color = "blue";
     this.type = "physics-body";
@@ -27,6 +28,7 @@ export default class PhysicsBody implements IPhysicsBody {
     this.x = x;
     this.y = y;
     this.fallcount = 0;
+    this.animation = 0;
     // this.checkForFall();
   }
 

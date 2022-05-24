@@ -1,5 +1,6 @@
 export const maps = {
   a_1:
+    "12-10;" +
     "tttttttttttttttttttttttttttttttttttttttt" +
     "txxxxxxcxxdxbcxxxxxbxbxxxxxxxcxxxxbxxxxt" +
     "txbsbxxxxxxcxxxxxxxxxbdxxbxxxxcxxxxxcxxt" +

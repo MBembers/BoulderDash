@@ -14,6 +14,7 @@ export default class Enemy implements IEnemy {
   direction: string;
   turning: string;
   isMoving: boolean;
+  animation: number;
 
   constructor(x: number, y: number, board: Entity[][], turning: string) {
     this.color = "blue";
