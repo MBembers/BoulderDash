@@ -42,7 +42,7 @@ export default class PhysicsBody implements IPhysicsBody {
           let moved = false;
           for (let neighbour of neighbours) {
             if (neighbour.y > this.y) {
-              if (isPlayer(neighbour) && this.fallcount > 0) neighbour.hit();
+              // if (isPlayer(neighbour) && this.fallcount > 0) neighbour.hit();
             }
             if (
               (neighbour.y > this.y || // is below

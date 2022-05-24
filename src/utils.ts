@@ -46,7 +46,7 @@ export function isPhysicsBody(entity: Entity): entity is PhysicsBody {
 }
 
 export function isSlippery(entity: Entity): boolean {
-  return isPhysicsBody(entity) || entity.type === "platform";
+  return isPhysicsBody(entity) || entity.type === "wall";
 }
 
 export function canPlayerMove(entity: Entity): boolean {

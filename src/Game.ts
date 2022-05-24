@@ -1,5 +1,5 @@
 import Boulder from "./Boulder";
-import { playerDeath, spritesheetCoords } from "./consts";
+import { caves, playerDeath, spritesheetCoords } from "./consts";
 import Diamond from "./Diamond";
 import Player from "./Player";
 import Tile from "./Tile";
@@ -53,6 +53,9 @@ export default class Game {
   time: number;
   timeInterval: NodeJS.Timer;
   mapGoal: number;
+  endX: number;
+  endY: number;
+  flashed: boolean;
 
   constructor() {
     this.setup();
@@ -144,6 +147,12 @@ export default class Game {
     this.state = "level";
   }
 
+  nextLevel() {
+    this.cave = caves[caves.indexOf(this.cave) + 1];
+    this.player.state = "loading";
+    this.loadLevel();
+  }
+
   createBoard() {
     this.map = maps[(this.cave + "_" + this.level) as keyof typeof maps];
     this.player.value = parseInt(this.map.split(";")[0].split("-")[1]);
@@ -165,8 +174,13 @@ export default class Game {
           this.player.levelSetup(j, i);
           this.player.setBoard(this.board);
         }
+        if (this.map[i * 40 + j] === "e") {
+          this.endY = i;
+          this.endX = j;
+        }
       }
     }
+    this.flashed = false;
     this.loading = "loading";
     this.time = 150;
     if (this.timeInterval) clearInterval(this.timeInterval);
@@ -243,9 +257,21 @@ export default class Game {
       this.ctx.fillStyle = "hsl(0, 0%, 0%)";
       this.ctx.fillRect(0, 0, this.canvasWidth, this.topBarHeight);
       if (this.loading === "none") {
-        this.drawText(` 20`, "left", "y", 0, 0);
+        this.drawText(
+          ` ${this.player.currGoal.toString().padStart(2, "0")}`,
+          "left",
+          "y",
+          0,
+          0
+        );
         this.drawSprite("dwSm", 96, 0);
-        this.drawText(`20`, "left", "w", 128, 0);
+        this.drawText(
+          `${this.player.value.toString().padStart(2, "0")}`,
+          "left",
+          "w",
+          128,
+          0
+        );
         this.drawText(
           ` ${this.player.diamonds.toString().padStart(2, "0")} ${this.time
             .toString()
@@ -380,6 +406,20 @@ export default class Game {
     if (this.player.lives === 0) {
       this.state = "menu";
       this.player.state = "dying";
+    }
+    if (this.player.diamonds === this.player.currGoal && !this.flashed) {
+      this.board[this.endY][this.endX].sprite = "otwall";
+      this.ctx.fillStyle = "white";
+      this.ctx.fillRect(
+        0,
+        0,
+        this.canvasWidth,
+        this.canvasHeight + this.topBarHeight
+      );
+      this.flashed = true;
+    }
+    if (this.player.x === this.endX && this.player.y === this.endY) {
+      this.nextLevel();
     }
   }
 
