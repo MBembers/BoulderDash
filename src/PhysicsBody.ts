@@ -3,6 +3,7 @@ import { Entity, IPhysicsBody } from "./types";
 import {
   getCornerNeighbours,
   getNeighbours,
+  isEnemy,
   isPhysicsBody,
   isPlayer,
   isSlippery,
@@ -20,7 +21,8 @@ export default class PhysicsBody implements IPhysicsBody {
   timeout: NodeJS.Timeout;
   fallcount: number;
   animation: number;
-  constructor(x: number, y: number, board: Entity[][]) {
+  ready: boolean;
+  constructor(x: number, y: number, board: Entity[][], ready = true) {
     this.color = "blue";
     this.type = "physics-body";
     this.sprite = "none";
@@ -29,20 +31,25 @@ export default class PhysicsBody implements IPhysicsBody {
     this.y = y;
     this.fallcount = 0;
     this.animation = 0;
+    this.ready = ready;
     // this.checkForFall();
   }
 
   checkForFall() {
     this.timeout = setTimeout(() => {
       let counter = 0;
-      if (!this.fallInterval)
+      if (!this.fallInterval && this.ready)
         this.fallInterval = setInterval(() => {
           this.isMoving = true;
           let neighbours = getNeighbours(this.x, this.y, this.board);
           let moved = false;
           for (let neighbour of neighbours) {
             if (neighbour.y > this.y) {
-              // if (isPlayer(neighbour) && this.fallcount > 0) neighbour.hit();
+              if (
+                (isPlayer(neighbour) || isEnemy(neighbour)) &&
+                this.fallcount > 0
+              )
+                neighbour.hit();
             }
             if (
               (neighbour.y > this.y || // is below

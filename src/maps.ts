@@ -54,7 +54,7 @@ export const maps = {
     "twbsxxxxxwxxbxwxdxxxxbxwwxxbxwwbxxxxxxxt" +
     "twbxxxxxxwxxwbxxbxxxxwxxxbxxxxxxbxbbxxxt" +
     "txwxxbxwxxxwxxbxwwxxbxwwxxxwxxxxbxbbxxxt" +
-    "txwxxbxwxxxwxxbxwwxxbxwwxxxwxxxxbxbbxxxt" +
+    "txwxxbdxxbxxxxwxxxbxxxxxxbxbdxxxxxxbxxxt" +
     "txxwbxxdxwxxbxbbxxxwxxxxxbxbdxxxxxxwxxbt" +
     "tdxdxbwxbxxxxwxwwxxxxxbbwbxxbxwxwbxxwbxt" +
     "twbxxbxbxxxxwxwwxxxxxxbwwbxxbxxxwwxxxwxt" +
@@ -70,5 +70,29 @@ export const maps = {
     "txxxxwxxxxxwxwwxxxxxxwwbxxbxwxwbxxwbxxxe" +
     "txxbxbxxxxwxwwxxxxxxxwwbxxbxxdwwxxxwxxbt" +
     "twxxbxwwxxxxwbbbdxxdxwxwbxxwbwxxwbxxdwbt" +
+    "tttttttttttttttttttttttttttttttttttttttt",
+  d_1:
+    "10-10;" +
+    "tttttttttttttttttttttttttttttttttttttttt" +
+    "txxxxxxxxxxxxxxxxbxxxxxxxxxxxxxxxxxxxxxt" +
+    "txxxxsxxxxxxxxxxxcxxxxxxxxxxxxxxxxxxxxxt" +
+    "txxxxexxxxxxxxxxxcxxxxxxxxxxxxxxxxxxxxxt" +
+    "txbbbbbbbbbbbxxxxcxxxxxxxxxxxxxxxxxxxxxt" +
+    "tbxxxxxxxxxxxbxxxcxxxxxxxxxxxxxxxxxxxxxt" +
+    "tbxxxxaxuxfxxxbxxfxxxxxxxxxxxxxxxxxxxxxt" +
+    "tbxxxxxxxxxxbbxxxxxxxxxxxxxxxxxxxxxxxxxt" +
+    "txbbbbbbcccbxxxxxxxxxxxxxxxxxxxxxxxxxxxt" +
+    "txxxxxxxcccxxxxxxxxxxxxxxxxxxxxxxxxxxxxt" +
+    "txxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxt" +
+    "txxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxt" +
+    "txxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxt" +
+    "txxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxt" +
+    "txxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxt" +
+    "txxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxt" +
+    "txxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxt" +
+    "txxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxt" +
+    "txxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxt" +
+    "txxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxt" +
+    "txxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxt" +
     "tttttttttttttttttttttttttttttttttttttttt",
 };

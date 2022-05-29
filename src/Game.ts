@@ -1,5 +1,5 @@
 import Boulder from "./Boulder";
-import { caves, playerDeath, spritesheetCoords } from "./consts";
+import { caves, diamondDeath, playerDeath, spritesheetCoords } from "./consts";
 import Diamond from "./Diamond";
 import Player from "./Player";
 import Tile from "./Tile";
@@ -8,7 +8,14 @@ import { Entity } from "./types";
 import Butterfly from "./Butterfly";
 import Firefly from "./Firefly";
 import { maps } from "./maps";
-import { compareCoords, isPhysicsBody } from "./utils";
+import {
+  compareCoords,
+  isAmoeba,
+  isDiamond,
+  isEnemy,
+  isPhysicsBody,
+} from "./utils";
+import Amoeba from "./Amoeba";
 
 export default class Game {
   canvasWidth: number;
@@ -70,7 +77,7 @@ export default class Game {
     this.tileHeight = 32;
     this.xTiles = 40;
     this.yTiles = 22;
-    this.cameraSpeed = 5;
+    this.cameraSpeed = 3.5;
     this.newPlayer = true;
     this.state = "menu";
     this.level = 1;
@@ -296,6 +303,8 @@ export default class Game {
   }
 
   animations() {
+    let amoebas: Amoeba[] = [];
+    let amoebaParent: Amoeba = undefined;
     if (
       this.coverIndicator < 700 &&
       this.coverIndicator > 695 &&
@@ -307,6 +316,8 @@ export default class Game {
         for (let j = 0; j < this.xTiles; j++) {
           let cell = this.board[i][j];
           if (isPhysicsBody(cell)) cell.checkForFall();
+          if (isAmoeba(cell)) cell.startGrow();
+          if (isEnemy(cell)) cell.startMoving();
         }
     }
     if (this.deathAnimation === 3) {
@@ -321,9 +332,16 @@ export default class Game {
     if (this.board.length > 0)
       for (let row of this.board) {
         for (let entity of row) {
-          if (["diamond", "firefly", "butterfly"].includes(entity.type)) {
+          if (isAmoeba(entity)) {
+            if (entity.isParent) amoebaParent = entity;
+            amoebas.push(entity);
+          }
+          if (["firefly", "butterfly", "amoeba"].includes(entity.type)) {
             entity.sprite = entity.type + this.animationFrame;
           }
+          if (isDiamond(entity))
+            if (entity.ready) entity.sprite = entity.type + this.animationFrame;
+
           if (entity.type === "player") {
             entity.sprite = "player";
             if (this.player.state === "move") {
@@ -356,6 +374,19 @@ export default class Game {
               entity.animation = 0;
             }
           }
+          if (isDiamond(entity)) {
+            if (!entity.ready) {
+              if (Number.isInteger(entity.animation))
+                entity.sprite = diamondDeath[entity.animation];
+              entity.animation += 0.5;
+              if (entity.animation >= diamondDeath.length - 1) {
+                entity.type = "diamond";
+                entity.ready = true;
+                entity.checkForFall();
+                entity.animation = 0;
+              }
+            }
+          }
         }
       }
     this.animationFrame += 1;
@@ -363,6 +394,7 @@ export default class Game {
     this.bgAnimation += 2;
     if (this.bgAnimation > 15) this.bgAnimation = 0;
 
+    // LOAD LEVEL WITH ANIMATION
     if (this.loading === "loading") {
       for (let i = 0; i < this.yTiles; i++) {
         for (let j = 0; j < this.xTiles; j++) {
@@ -383,8 +415,10 @@ export default class Game {
               this.board[i][j] = new Tile(j, i, "wall", this.board);
             else if (tile === "f")
               this.board[i][j] = new Firefly(j, i, this.board);
-            else if (tile === "u")
+            else if (tile === "u") {
               this.board[i][j] = new Butterfly(j, i, this.board);
+            } else if (tile === "a")
+              this.board[i][j] = new Amoeba(j, i, this.board, true);
             else if (tile === "e")
               this.board[i][j] = new Tile(j, i, "end", this.board);
             else if (tile === "s") {
@@ -421,6 +455,7 @@ export default class Game {
     if (this.player.x === this.endX && this.player.y === this.endY) {
       this.nextLevel();
     }
+    if (amoebaParent) amoebaParent.children = amoebas;
   }
 
   timeCounter() {
@@ -434,8 +469,8 @@ export default class Game {
   setCameraDest() {
     const playerX = this.player.x * this.tileWidth + this.tileWidth / 2;
     const playerY = this.player.y * this.tileHeight + this.tileHeight / 2;
-    const dx = (this.canvasWidth / 2) * 0.65;
-    const dy = (this.canvasHeight / 2) * 0.65;
+    const dx = (this.canvasWidth / 2) * 0.55;
+    const dy = (this.canvasHeight / 2) * 0.55;
     if (Math.abs(playerX - this.cameraX) >= dx) this.cameraDestX = playerX;
     if (Math.abs(playerY - this.cameraY) >= dy) this.cameraDestY = playerY;
   }
@@ -480,6 +515,7 @@ export default class Game {
   ) {
     const spriteCoords =
       spritesheetCoords[sprite as keyof typeof spritesheetCoords];
+
     this.ctx.drawImage(
       this.spritesheet as CanvasImageSource,
       spriteCoords[0] + xoff,

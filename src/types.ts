@@ -1,3 +1,4 @@
+import Amoeba from "./Amoeba";
 import Player from "./Player";
 
 export interface IGame {
@@ -90,3 +91,5 @@ export interface IVelocity {
 }
 
 export type Entity = ITile | IPhysicsBody | IPlayer | IEnemy;
+
+export type amobus = Amoeba | undefined;

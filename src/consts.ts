@@ -56,6 +56,13 @@ export const playerDeath: string[] = [
   "clear",
 ];
 
+export const diamondDeath: string[] = [
+  "bfdeath0",
+  "bfdeath1",
+  "bfdeath2",
+  "bfdeath3",
+];
+
 export const caves: string = "abcdefghijklmnop";
 
 export const spritesheetCoords = {

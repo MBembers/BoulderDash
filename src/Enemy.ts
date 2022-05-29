@@ -1,7 +1,15 @@
 import { dirs, velocityX } from "./consts";
+import Diamond from "./Diamond";
 import Tile from "./Tile";
 import { Entity, IEnemy } from "./types";
-import { getCornerNeighbours, isPhysicsBody } from "./utils";
+import {
+  getCornerNeighbours,
+  getNeighbours,
+  isAmoeba,
+  isEnemy,
+  isPhysicsBody,
+  isPlayer,
+} from "./utils";
 
 export default class Enemy implements IEnemy {
   x: number;
@@ -25,11 +33,48 @@ export default class Enemy implements IEnemy {
     this.y = y;
     this.turning = turning;
     this.direction = "up";
-    this.startMoving();
+  }
+
+  hit() {
+    this.animation = 0;
+
+    let neighbours = getCornerNeighbours(this.x, this.y, this.board);
+    neighbours.push(this.board[this.y][this.x]);
+    for (let neighbour of neighbours) {
+      if (neighbour.type !== "twall") {
+        if (isAmoeba(neighbour) || isEnemy(neighbour)) neighbour.delete();
+        if (this.type === "butterfly")
+          this.board[neighbour.y][neighbour.x] = new Diamond(
+            neighbour.x,
+            neighbour.y,
+            this.board,
+            false
+          );
+        else
+          this.board[neighbour.y][neighbour.x] = new Tile(
+            neighbour.x,
+            neighbour.y,
+            "death",
+            this.board
+          );
+
+        this.board[neighbour.y][neighbour.x].sprite = "clear";
+      }
+    }
   }
 
   startMoving() {
     this.moveInterval = setInterval(() => {
+      for (let e of getNeighbours(this.x, this.y, this.board)) {
+        if (isAmoeba(e)) {
+          this.delete();
+          this.hit();
+        }
+        if (isPlayer(e)) {
+          this.delete();
+          e.hit();
+        }
+      }
       if (this.checkSide(this.turning)) {
         this.turn(this.turning);
         this.move(this.direction);
@@ -94,5 +139,9 @@ export default class Enemy implements IEnemy {
     if (iofdir >= dirs.length) iofdir = 0;
     if (iofdir < 0) iofdir = dirs.length - 1;
     this.direction = dirs[iofdir];
+  }
+
+  delete() {
+    clearInterval(this.moveInterval);
   }
 }
