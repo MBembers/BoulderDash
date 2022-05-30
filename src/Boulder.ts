@@ -1,4 +1,5 @@
 import { TilePalette } from "./consts";
+import Diamond from "./Diamond";
 import PhysicsBody from "./PhysicsBody";
 import Tile from "./Tile";
 import { IBoulder, ITilePalette, Entity } from "./types";
@@ -17,5 +18,10 @@ export default class Boulder extends PhysicsBody implements IBoulder {
     this.type = "boulder";
     this.color = TilePalette[this.type as keyof ITilePalette];
     this.sprite = "boulder";
+    this.mwallFunc = (neighbour: Tile) => {
+      let diamond = new Diamond(neighbour.x, neighbour.y + 1, this.board);
+      this.board[neighbour.y + 1][neighbour.x] = diamond;
+      diamond.checkForFall();
+    };
   }
 }

@@ -9,7 +9,9 @@ export default class Tile implements ITile {
   sprite: string;
   board: Entity[][];
   animation: number;
+  state: string;
   constructor(x: number, y: number, type: string, board: Entity[][]) {
+    this.state = "normal";
     this.x = x;
     this.y = y;
     this.type = type;
@@ -17,6 +19,7 @@ export default class Tile implements ITile {
     this.board = board;
     this.sprite = type;
     if (type === "end") this.sprite = "twall";
+    if (type === "mwall") (this.state = "ready"), (this.sprite = "wall");
     this.animation = 0;
   }
 

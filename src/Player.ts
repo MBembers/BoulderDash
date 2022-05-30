@@ -7,6 +7,7 @@ import {
   isBoulder,
   isDiamond,
   isPhysicsBody,
+  isTile,
 } from "./utils";
 
 export default class Player implements IPlayer {
@@ -27,8 +28,10 @@ export default class Player implements IPlayer {
   state: string;
   animation: number;
   value: number;
+  nextValue: number;
   currGoal: number;
   nuts: number;
+  isSpaceHeld: boolean;
 
   constructor(x: number, y: number, board: Entity[][]) {
     this.board = board;
@@ -43,6 +46,7 @@ export default class Player implements IPlayer {
     this.points = 0;
     this.lives = 3;
     this.value = 10;
+    this.nextValue = 15;
   }
 
   levelSetup(x: number, y: number) {
@@ -56,6 +60,7 @@ export default class Player implements IPlayer {
     this.isPushing = false;
     this.animation = 0;
     this.diamonds = 0;
+    this.isSpaceHeld = false;
   }
 
   setPos(x: number, y: number) {
@@ -80,28 +85,44 @@ export default class Player implements IPlayer {
             const boulder = new Boulder(newX + xdir, this.y, this.board);
             this.board[this.y][newX + xdir] = boulder;
             boulder.checkForFall();
-            this.movePlayer(newX, newY);
+            if (this.isSpaceHeld)
+              this.board[this.y][newX] = new Tile(
+                newX,
+                this.y,
+                "clear",
+                this.board
+              );
+            else this.movePlayer(newX, newY);
           }
 
           this.isPushing = false;
-        }, 700);
+        }, 500);
       }
     } else {
       if (isDiamond(entity)) {
         entity.delete();
-        this.diamonds++;
         this.points += this.value;
+        this.diamonds++;
+        if (this.currGoal === this.diamonds) this.value = this.nextValue;
+
         if (this.points % 500 === 0 && this.points > 0) {
           this.lives++;
         }
-        document.title = this.lives + " l";
       }
       if (entity.type === "end" && this.currGoal > this.diamonds) {
         return;
       }
       // moved
-      this.movePlayer(newX, newY);
+      if (this.isSpaceHeld) {
+        this.board[newY][newX] = new Tile(newX, newY, "clear", this.board);
+        for (let e of getCornerNeighbours(newX, newY, this.board)) {
+          if (isPhysicsBody(e)) {
+            e.checkForFall();
+          }
+        }
+      } else this.movePlayer(newX, newY);
     }
+    // }
   }
 
   movePlayer(newX: number, newY: number) {
@@ -120,11 +141,9 @@ export default class Player implements IPlayer {
   }
 
   hit() {
-    return;
     this.animation = 0;
     this.state = "dying";
     this.lives--;
-    document.title = this.lives + " l";
 
     let neighbours = getCornerNeighbours(this.x, this.y, this.board);
     neighbours.push(this.board[this.y][this.x]);
@@ -141,16 +160,26 @@ export default class Player implements IPlayer {
   }
 
   canMove() {
-    return !this.isMoving && this.state !== "dying" && this.state !== "loading";
+    return (
+      !this.isMoving &&
+      this.state !== "dying" &&
+      this.state !== "loading" &&
+      this.state !== "deloading"
+    );
   }
 
   listeners() {
     document.addEventListener("keydown", (e) => {
-      // console.log(e.code);
-      if (this.canMove()) {
+      if (e.code === "Space") this.isSpaceHeld = true;
+      else if (this.canMove()) {
         this.isMoving = true;
         this.moveInterval = setInterval(() => {
-          if (this.state !== "dying") {
+          if (
+            this.state !== "dying" &&
+            this.state !== "deloading" &&
+            this.state !== "loading" &&
+            this.state !== "spending"
+          ) {
             if (e.code === "ArrowRight") {
               this.checkMove(this.x + 1, this.y);
               this.state = "move";
@@ -176,12 +205,15 @@ export default class Player implements IPlayer {
       }
     });
     document.addEventListener("keyup", (e) => {
-      clearInterval(this.moveInterval);
-      clearTimeout(this.pushTimeout);
-      this.isMoving = false;
-      this.isPushing = false;
-      if (this.canMove()) {
-        this.state = "normal";
+      if (e.code === "Space") this.isSpaceHeld = false;
+      else {
+        clearInterval(this.moveInterval);
+        clearTimeout(this.pushTimeout);
+        this.isMoving = false;
+        this.isPushing = false;
+        if (this.canMove()) {
+          this.state = "normal";
+        }
       }
     });
   }

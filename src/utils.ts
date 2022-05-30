@@ -4,6 +4,7 @@ import Diamond from "./Diamond";
 import Enemy from "./Enemy";
 import PhysicsBody from "./PhysicsBody";
 import Player from "./Player";
+import Tile from "./Tile";
 import { Entity } from "./types";
 
 export function getNeighbours(
@@ -45,6 +46,12 @@ export function isAmoeba(entity: Entity): entity is Amoeba {
 
 export function isPlayer(entity: Entity): entity is Player {
   return entity.type === "player";
+}
+
+export function isTile(entity: Entity): entity is Tile {
+  return ["twall", "clear", "wall", "dirt", "end", "mwall", "death"].includes(
+    entity.type
+  );
 }
 
 export function isPhysicsBody(entity: Entity): entity is PhysicsBody {

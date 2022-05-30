@@ -1,9 +1,33 @@
 export const maps = {
+  // a_1:
+  //   "12-10-15;" +
+  //   "tttttttttttttttttttttttttttttttttttttttt" +
+  //   "txxxxxxcxxdxbcxxxxxbxbxxxxxxxcxxxxbxxxxt" +
+  //   "txbsbxxxxxxcxxxxxxxxxbdxxbxxxxcxxxxxcxxt" +
+  //   "txxxxxxxxxxcxxbxxxxxbxbxxbxxxxxxxxbxxxxt" +
+  //   "tbxbbxxxxxxxxxbxxxxxxbxxbxxxxbxxxbxxxxxt" +
+  //   "tbxcbxxxxxxxxxcbxxbxxxxxxxxbxxxxxxbxbbxt" +
+  //   "txxxcxxbxxxxxxxxbxxxxxbxcbxxxxxxxxbxbbxt" +
+  //   "twwwwwwwwwwwwwwwwwwwwwwwwwwwwwwxxxbxxbxt" +
+  //   "txcxxxbxxdxcxxbxbxxxxxxxxxxdxbdxxxxxxcxt" +
+  //   "txxdxxxxxbxxxxxcxxxxxxxxbbcbxxbxxxxbxxxt" +
+  //   "txxxbxxbxbxxxxxxxxxxxxxxbcxbxxbxxxxxxxxt" +
+  //   "txbxxxxxbxxxxxxxxbbbxxxxxxxbxxcxdxxxxbxt" +
+  //   "txdxxcxxbxccxxxxxbxbdxxdxxxxbxxxbxxdxcxt" +
+  //   "txcbxxxxxxxxxxxxxxbcbxxbxxxxxxxxdxxxxxbt" +
+  //   "txxxxxxxxwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwt" +
+  //   "tcbxxxxxxxxxbxxxdxxxxbxxxxxbxxxbxxxxxxxt" +
+  //   "tcbxxxxxxxxxcbxxbxxxxxxxxbxxxxxxbxbbxxet" +
+  //   "txcxxbxxxxxxxxbxxxxxbxccxxxxdxxxbxbbxxxt" +
+  //   "txxxxbdxxbxxxxxxxxbxxxxxxbxbdxxxxxxbxxxt" +
+  //   "txxxcxxbxcxxbxbbxxxxxxxxxbxbdxxxxxxcxxbt" +
+  //   "txdxxxxcxxxxxcxxxxxxxxxcxbxxbxxxxbxxxbxt" +
+  //   "tttttttttttttttttttttttttttttttttttttttt",
   a_1:
     "12-10-15;" +
     "tttttttttttttttttttttttttttttttttttttttt" +
     "txxxxxxcxxdxbcxxxxxbxbxxxxxxxcxxxxbxxxxt" +
-    "txbsbxxxxxxcxxxxxxxxxbdxxbxxxxcxxxxxcxxt" +
+    "txbsxddxexxcxxxxxxxxxbdxxbxxxxcxxxxxcxxt" +
     "txxxxxxxxxxcxxbxxxxxbxbxxbxxxxxxxxbxxxxt" +
     "tbxbbxxxxxxxxxbxxxxxxbxxbxxxxbxxxbxxxxxt" +
     "tbxcbxxxxxxxxxcbxxbxxxxxxxxbxxxxxxbxbbxt" +
@@ -17,7 +41,7 @@ export const maps = {
     "txcbxxxxxxxxxxxxxxbcbxxbxxxxxxxxdxxxxxbt" +
     "txxxxxxxxwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwt" +
     "tcbxxxxxxxxxbxxxdxxxxbxxxxxbxxxbxxxxxxxt" +
-    "tcbxxxxxxxxxcbxxbxxxxxxxxbxxxxxxbxbbxxet" +
+    "tcbxxxxxxxxxcbxxbxxxxxxxxbxxxxxxbxbbxxxt" +
     "txcxxbxxxxxxxxbxxxxxbxccxxxxdxxxbxbbxxxt" +
     "txxxxbdxxbxxxxxxxxbxxxxxxbxbdxxxxxxbxxxt" +
     "txxxcxxbxcxxbxbbxxxxxxxxxbxbdxxxxxxcxxbt" +
@@ -167,14 +191,39 @@ export const maps = {
     "txcxxbxcxxxcxxbxccxaxxccxxxcxxxxbxbbxxxt" +
     "txcxdbfxxbxxxxcxxxbxxxxxxbxbfxxxxxdbxxxt" +
     "tttttttttttttttttttttttttttttttttttttttt",
+  h_1:
+    "10-10-20;" +
+    "tttttttttttttttttttttttttttttttttttttttt" +
+    "tcxcbxxcxcxxcxxbxcxxscxxbxccxxbxcbxxxcxt" +
+    "txbxbbxxxxxxcxxbxxxbxxxxcxxxbxxxxxdbxbxt" +
+    "ecbxxbxxxccxxxbxxbxcxxbxbxxxwwwwwwwwwwwt" +
+    "txxxdcxxbxcfxxxxxbxxxxxcxxxxxxxxbbcbxxbt" +
+    "twwwwwwwwwwwwxxbxbxxxxcxccxxxxxxbccbxxbt" +
+    "txccxxxcxxbxccxxbxccxxxxcbbbxxxxxccbxxct" +
+    "txxxcbxxxcfxxcxxbxccxxxxxbxbbxxbxcxcbxxt" +
+    "txxbxcxxbxcbxxxxcxxxxxcxxxbcbxxbxxxxcxxt" +
+    "txxxxxbcxxxxxxcxccfbbxcxxxccbxxcxbxxxxbt" +
+    "tbxbxxxcxcbxxxxxxcxxbxxxbxxxxbxxxxdbxcct" +
+    "txxxxxxbxcbxxxxxxxxxcbxxbxxxwwwwwwwwwwwt" +
+    "txbbxxxxxxcxxbxcxxxcxxbxccxxbxccxxxcbxxt" +
+    "twwwwwwwwwwwwbxxxxxxxxcxxxbxxxxxxbxbbxxt" +
+    "txxbxxxccxxxdxxbxcxxbxbbxxxxxxxxxbxbbxxt" +
+    "txxcxxbxcxbxxxmmmmmmmmxxxxxxxxxccbxxbxxt" +
+    "tbxxcbxxxxbxxbcbxxxdcxxcxxxxxxxccbxxbxxt" +
+    "tcxxxcxxbxcxxxbxccxxxxxbbbbxxbxcxcbxxcbt" +
+    "txcbxxfxbxxxxcxccxxxxxxbbcbxxbxxxccxxxbt" +
+    "tbxccxxbxccxxxxxbxbxcxxxccbxxbxxxxcxxxbt" +
+    "txxxccxbxbcxxxxxbxbxxxxxcccxxcxbxxxxbxxt" +
+    "tttttttttttttttttttttttttttttttttttttttt",
+
   t_1:
-    "10-10;" +
+    "9-10-50;" +
     "tttttttttttttttttttttttttttttttttttttttt" +
     "txxxxxxxxxxxxxxxxbxxxxxxxxxxxxxxxxxxxxxt" +
     "txxxxsxxxxxxxxxxxcxxxxxxxxxxxxxxxxxxxxxt" +
-    "txxxxexxxxxxxxxxxcxxxxxxxxxxxxxxxxxxxxxt" +
+    "txxxxexxxxxxxxxxxcxxdddddddddddxxxxxxxxt" +
     "txbbbbbbbbbbbxxxxcxxxxxxxxxxxxxxxxxxxxxt" +
-    "tbxxxxxxxxxxxbxxxcxxxxxxxxxxxxxxxxxxxxxt" +
+    "tbxxxxxxxxxxxbxxxcxxxxbxxxxxxxxxxxxxxxxt" +
     "tbxxxxaxuxuxxxbxxuxxxxxxxxxxxxxxxxxxxxxt" +
     "tbxxxxxxxxxxbbxxxxxxxxxxxxxxxxxxxxxxxxxt" +
     "txbbbbbbcccbxxxxxxxxxxxxxxxxxxxxxxxxxxxt" +
@@ -192,17 +241,41 @@ export const maps = {
     "txxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxt" +
     "tttttttttttttttttttttttttttttttttttttttt",
   t_2:
-    "10-10;" +
+    "20-0-0;" +
     "tttttttttttttttttttttttttttttttttttttttt" +
-    "txxxxxxxxxxxxxxxxbxxxxxxxxxxxxxxxxxxxxxt" +
-    "txxxxsxxxxxxxxxxxcxxxxxxxxxxxxxxxxxxxxxt" +
-    "txxxxexxxxxxxxxxxcxxxxxxxxxxxxxxxxxxxxxt" +
-    "txbbbbbbbbbbbxxxxcxxxxxxxxxxxxxxxxxxxxxt" +
-    "tbxxxxxxxxxxxbxxxcxxxxxxxxxxxxxxxxxxxxxt" +
-    "tbxxxxaxuxuxxxbxxuxxxxxxxxxxxxxxxxxxxxxt" +
-    "tbxxxxxxxxxxbbxxxxxxxxxxxxxxxxxxxxxxxxxt" +
-    "txbbbbbbcccbxxxxxxxxxxxxxxxxxxxxxxxxxxxt" +
-    "txxxxxxxcccxxxxxxxxxxxxxxxxxxxxxxxxxxxxt" +
+    "txxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxt" +
+    "txxxxsxxxxxxxxxxbbbbbbbbbbbbbbbbxxxxxxxt" +
+    "txxxxexxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxt" +
+    "txxxxxxxxxxxxxxxbbbbbbbbbbbbbbbbxxxxxxxt" +
+    "txxxxxxxxxxxxxxbbbbbbbbbbbbbbbbbbxxxxxxt" +
+    "txxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxt" +
+    "txxxxxxxxxxxxxxxcccccccccccccccccxxxxxxt" +
+    "txxxxxxxxxxxxxxxmmmmmmmmmmmmmmmmmxxxxxxt" +
+    "txxxxxxxxxxxxxxxcccccccccccccccccxxxxxxt" +
+    "txxxxxxxxxxxxxxxcccccccccccccccccxxxxxxt" +
+    "txxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxt" +
+    "txxxxxxxxxxxxxxxmmmmmmmmmmmmmxxxxxxxxxxt" +
+    "txxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxt" +
+    "txxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxt" +
+    "txxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxt" +
+    "txxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxt" +
+    "txxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxt" +
+    "txxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxt" +
+    "txxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxt" +
+    "txxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxt" +
+    "tttttttttttttttttttttttttttttttttttttttt",
+  empty_0:
+    "0-0-0;" +
+    "tttttttttttttttttttttttttttttttttttttttt" +
+    "txxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxt" +
+    "txxxxsxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxt" +
+    "txxxxexxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxt" +
+    "txxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxt" +
+    "txxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxt" +
+    "txxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxt" +
+    "txxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxt" +
+    "txxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxt" +
+    "txxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxt" +
     "txxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxt" +
     "txxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxt" +
     "txxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxt" +

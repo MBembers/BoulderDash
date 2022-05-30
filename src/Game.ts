@@ -14,6 +14,7 @@ import {
   isDiamond,
   isEnemy,
   isPhysicsBody,
+  isTile,
 } from "./utils";
 import Amoeba from "./Amoeba";
 
@@ -57,12 +58,16 @@ export default class Game {
   coverIndicator: number;
   loading: string;
   map: string;
+  mapGoal: number;
   time: number;
   timeInterval: NodeJS.Timer;
-  mapGoal: number;
   endX: number;
   endY: number;
   flashed: boolean;
+
+  magicWallTime: number;
+  isMagicWallActive: boolean;
+  gameover: boolean;
 
   constructor() {
     this.setup();
@@ -125,9 +130,19 @@ export default class Game {
         if (this.level > 3) this.level = 3;
         if (e.code === "Space") this.loadLevel();
       } else if (this.state === "level") {
-        if (e.code === "Escape") {
-          if (this.player.state !== "dying") this.player.lives--;
-          this.loadLevel();
+        if (e.code === "Escape" && this.loading === "none" && !this.gameover) {
+          if (this.player.lives > 0) {
+            if (this.player.state !== "dying") this.player.lives--;
+            this.coverIndicator = 0;
+            this.loading = "deloading";
+          }
+          if (this.player.lives <= 0) {
+            this.gameover = true;
+            this.loading = "none";
+            setTimeout(() => {
+              this.loading = "deloading";
+            }, 1000);
+          }
         }
       }
     });
@@ -137,6 +152,7 @@ export default class Game {
   }
 
   loadLevel() {
+    this.gameover = false;
     this.isMoving = false;
     this.boardWidth = this.xTiles * this.tileWidth;
     this.boardHeight = this.yTiles * this.tileHeight;
@@ -151,6 +167,8 @@ export default class Game {
       this.cave === "t" ? "a" : this.cave
     }.png`;
     this.animationFrame = 0;
+    this.magicWallTime = 30;
+    this.isMagicWallActive = false;
 
     // clearInterval(this.renderInterval);
     // clearInterval(this.animationInterval);
@@ -177,6 +195,7 @@ export default class Game {
     }
     this.map = maps[mapname as keyof typeof maps];
     this.player.value = parseInt(this.map.split(";")[0].split("-")[1]);
+    this.player.nextValue = parseInt(this.map.split(";")[0].split("-")[2]);
     this.mapGoal = parseInt(this.map.split(";")[0].split("-")[0]);
     this.player.currGoal = this.mapGoal;
     this.map = this.map.split(";")[1];
@@ -212,13 +231,13 @@ export default class Game {
 
   render() {
     this.clearCanvas();
-    this.ctx.fillStyle = "black";
-    this.ctx.fillRect(
-      0,
-      0,
-      this.canvasWidth,
-      this.canvasHeight + this.topBarHeight
-    );
+    // this.ctx.fillStyle = "black";
+    // this.ctx.fillRect(
+    //   0,
+    //   0,
+    //   this.canvasWidth,
+    //   this.canvasHeight + this.topBarHeight
+    // );
     const bgX = 0;
     const bgY = this.topBarHeight + 16;
     if (this.state === "menu") {
@@ -249,7 +268,7 @@ export default class Game {
         0,
         288 + 97
       );
-    } else if (this.state === "level") {
+    } else if (this.state === "level" || this.state === "spending") {
       this.setCameraDest();
       this.updateCamera();
       for (let i = 0; i < this.yTiles; i++) {
@@ -260,31 +279,51 @@ export default class Game {
             i * this.tileHeight +
             (this.canvasHeight / 2 - this.cameraY) +
             this.topBarHeight;
-
-          if (entity.type === "ltwall" && this.loading === "loading") {
+          if (
+            entity.type === "ltwall" &&
+            (this.loading === "loading" || this.loading === "deloading")
+          ) {
             this.drawSprite(entity.sprite, x, y - this.bgAnimation);
             this.drawSprite(entity.sprite, x, y + 32 - this.bgAnimation);
-          } else if (entity.sprite !== "none") {
-            this.drawSprite(entity.sprite, x, y);
-          } else {
-            // color
-            this.ctx.fillStyle = entity.color;
+          }
+        }
+      }
+      for (let i = 0; i < this.yTiles; i++) {
+        for (let j = 0; j < this.xTiles; j++) {
+          let entity = this.board[i][j];
+          let x = j * this.tileWidth + (this.canvasWidth / 2 - this.cameraX);
+          let y =
+            i * this.tileHeight +
+            (this.canvasHeight / 2 - this.cameraY) +
+            this.topBarHeight;
 
-            // tile
-            this.ctx.fillRect(x, y, this.tileWidth, this.tileHeight);
+          if (entity.sprite !== "none" && entity.type !== "ltwall") {
+            this.drawSprite(entity.sprite, x, y);
           }
         }
       }
       this.ctx.fillStyle = "hsl(0, 0%, 0%)";
       this.ctx.fillRect(0, 0, this.canvasWidth, this.topBarHeight);
-      if (this.loading === "none") {
-        this.drawText(
-          ` ${this.player.currGoal.toString().padStart(2, "0")}`,
-          "left",
-          "y",
-          0,
-          0
-        );
+      if (this.gameover) {
+        this.drawText("  g a m e  o v e r", "left", "w", 0, 0);
+      } else if (this.time <= 0) {
+        this.drawText(" o u t  o f  t i m e", "left", "w", 0, 0);
+      } else if (
+        (this.loading === "none" || this.loading === "spending") &&
+        this.state === "level"
+      ) {
+        if (this.player.currGoal > this.player.diamonds)
+          this.drawText(
+            ` ${this.player.currGoal.toString().padStart(2, "0")}`,
+            "left",
+            "y",
+            0,
+            0
+          );
+        else {
+          this.drawSprite("dwSm", 32, 0);
+          this.drawSprite("dwSm", 64, 0);
+        }
         this.drawSprite("dwSm", 96, 0);
         this.drawText(
           `${this.player.value.toString().padStart(2, "0")}`,
@@ -346,6 +385,28 @@ export default class Game {
     if (this.board.length > 0)
       for (let row of this.board) {
         for (let entity of row) {
+          if (isTile(entity)) {
+            if (entity.type === "mwall" && entity.state === "factive") {
+              this.isMagicWallActive = true;
+            }
+            if (entity.type === "mwall" && this.isMagicWallActive) {
+              entity.state = "active";
+            }
+            if (
+              entity.type === "mwall" &&
+              !this.isMagicWallActive &&
+              entity.state !== "ready" &&
+              entity.state !== "factive"
+            ) {
+              entity.state = "expired";
+              entity.sprite = "wall";
+            }
+            if (entity.type === "mwall" && entity.state === "active") {
+              let animFrame = this.animationFrame / 2;
+              if (Number.isInteger(animFrame))
+                entity.sprite = "mwall" + animFrame;
+            }
+          }
           if (isAmoeba(entity)) {
             if (entity.isParent) amoebaParent = entity;
             amoebas.push(entity);
@@ -360,6 +421,9 @@ export default class Game {
             entity.sprite = "player";
             if (this.player.state === "move") {
               entity.sprite = this.player.move + this.animationFrame;
+            }
+            if (this.player.state === "spending") {
+              entity.sprite = "runright" + this.animationFrame;
             }
           }
           if (
@@ -381,13 +445,14 @@ export default class Game {
           if (entity.type === "death") {
             if (Number.isInteger(entity.animation))
               entity.sprite = playerDeath[entity.animation];
-            entity.animation += 0.5;
+            entity.animation += 0.25;
             if (entity.animation >= playerDeath.length - 1) {
               entity.type = "clear";
               entity.sprite = "clear";
               entity.animation = 0;
             }
           }
+
           if (isDiamond(entity)) {
             if (!entity.ready) {
               if (Number.isInteger(entity.animation))
@@ -427,6 +492,8 @@ export default class Game {
               this.board[i][j] = new Tile(j, i, "clear", this.board);
             else if (tile === "w")
               this.board[i][j] = new Tile(j, i, "wall", this.board);
+            else if (tile === "m")
+              this.board[i][j] = new Tile(j, i, "mwall", this.board);
             else if (tile === "f")
               this.board[i][j] = new Firefly(j, i, this.board, "down");
             else if (tile === "h")
@@ -453,11 +520,29 @@ export default class Game {
           }
         }
       }
+      this.coverIndicator -= 4;
     }
 
-    this.coverIndicator -= 4;
+    if (this.loading === "deloading" && this.coverIndicator > 100) {
+      if (this.gameover) this.loading = "back";
+      else if (this.player.x === this.endX && this.player.y === this.endY)
+        this.nextLevel();
+      else this.loadLevel();
+    }
 
-    if (this.player.lives === 0) {
+    // DELOAD
+    if (this.loading === "deloading") {
+      for (let i = 0; i < this.yTiles; i++) {
+        for (let j = 0; j < this.xTiles; j++) {
+          if (Math.random() < this.coverIndicator / 100) {
+            this.board[i][j] = new Tile(j, i, "ltwall", this.board);
+          }
+        }
+      }
+      this.coverIndicator += 4;
+    }
+
+    if (this.player.lives === 0 && this.gameover && this.loading === "back") {
       this.state = "menu";
       this.player.state = "dying";
     }
@@ -473,8 +558,11 @@ export default class Game {
       this.flashed = true;
     }
     if (this.player.x === this.endX && this.player.y === this.endY) {
-      this.player.state = "loading";
-      this.nextLevel();
+      if (this.loading === "none") this.spendTime();
+      if (this.loading === "deloading") {
+        this.player.state = "deloading";
+        // this.nextLevel();
+      }
     }
     if (amoebaParent) amoebaParent.children = amoebas;
   }
@@ -482,9 +570,32 @@ export default class Game {
   timeCounter() {
     clearInterval(this.timeInterval);
     this.timeInterval = setInterval(() => {
-      this.time--;
-      if (this.time < 0) clearInterval(this.timeInterval);
+      if (this.time > 0) this.time--;
+      if (this.isMagicWallActive) this.magicWallTime--;
+      if (this.magicWallTime < 0) this.isMagicWallActive = false;
+      if (this.time <= 0) {
+        clearInterval(this.timeInterval);
+      }
     }, 1000);
+  }
+
+  spendTime() {
+    this.loading = "spending";
+    this.player.state = "spending";
+    this.player.move = "runright";
+    clearInterval(this.timeInterval);
+    this.timeInterval = setInterval(() => {
+      this.loading = "spending";
+      this.player.state = "spending";
+      this.player.move = "runright";
+      this.time--;
+      this.player.points++;
+      if (this.time === 0) {
+        clearInterval(this.timeInterval);
+        this.loading = "deloading";
+        this.coverIndicator = 0;
+      }
+    }, 30);
   }
 
   setCameraDest() {

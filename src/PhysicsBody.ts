@@ -1,3 +1,5 @@
+import Boulder from "./Boulder";
+import Diamond from "./Diamond";
 import Tile from "./Tile";
 import { Entity, IPhysicsBody } from "./types";
 import {
@@ -7,6 +9,7 @@ import {
   isPhysicsBody,
   isPlayer,
   isSlippery,
+  isTile,
 } from "./utils";
 
 export default class PhysicsBody implements IPhysicsBody {
@@ -22,6 +25,7 @@ export default class PhysicsBody implements IPhysicsBody {
   fallcount: number;
   animation: number;
   ready: boolean;
+  mwallFunc: (neighbour: Tile) => void;
   constructor(x: number, y: number, board: Entity[][], ready = true) {
     this.color = "blue";
     this.type = "physics-body";
@@ -33,6 +37,9 @@ export default class PhysicsBody implements IPhysicsBody {
     this.animation = 0;
     this.ready = ready;
     // this.checkForFall();
+    this.mwallFunc = (neighbour: Tile) => {
+      console.log("sus");
+    };
   }
 
   checkForFall() {
@@ -45,11 +52,34 @@ export default class PhysicsBody implements IPhysicsBody {
           let moved = false;
           for (let neighbour of neighbours) {
             if (neighbour.y > this.y) {
-              if (
-                (isPlayer(neighbour) || isEnemy(neighbour)) &&
-                this.fallcount > 0
-              )
-                neighbour.hit();
+              if (this.fallcount > 0) {
+                if (isPlayer(neighbour) || isEnemy(neighbour)) neighbour.hit();
+                else if (isTile(neighbour)) {
+                  if (neighbour.type === "mwall") {
+                    // console.log(neighbour);
+                    if (neighbour.state === "ready")
+                      neighbour.state = "factive";
+                    if (
+                      neighbour.state === "active" ||
+                      neighbour.state === "factive"
+                    ) {
+                      if (
+                        this.board[neighbour.y + 1][neighbour.x].type ===
+                        "clear"
+                      ) {
+                        this.mwallFunc.bind(this)(neighbour);
+                      }
+                      this.delete();
+                      this.board[this.y][this.x] = new Tile(
+                        this.x,
+                        this.y,
+                        "clear",
+                        this.board
+                      );
+                    }
+                  }
+                }
+              }
             }
             if (
               (neighbour.y > this.y || // is below
