@@ -32,7 +32,7 @@ export default class Enemy implements IEnemy {
     this.x = x;
     this.y = y;
     this.turning = turning;
-    this.direction = "up";
+    this.direction = "down";
   }
 
   hit() {
@@ -41,7 +41,7 @@ export default class Enemy implements IEnemy {
     let neighbours = getCornerNeighbours(this.x, this.y, this.board);
     neighbours.push(this.board[this.y][this.x]);
     for (let neighbour of neighbours) {
-      if (neighbour.type !== "twall") {
+      if (neighbour.type !== "twall" && neighbour.type !== "player") {
         if (isAmoeba(neighbour) || isEnemy(neighbour)) neighbour.delete();
         if (this.type === "butterfly")
           this.board[neighbour.y][neighbour.x] = new Diamond(

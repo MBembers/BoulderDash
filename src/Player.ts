@@ -28,11 +28,13 @@ export default class Player implements IPlayer {
   animation: number;
   value: number;
   currGoal: number;
+  nuts: number;
 
   constructor(x: number, y: number, board: Entity[][]) {
     this.board = board;
     this.setup(x, y);
     this.listeners();
+    this.nuts = 2;
   }
 
   setup(x: number, y: number) {
@@ -118,6 +120,7 @@ export default class Player implements IPlayer {
   }
 
   hit() {
+    return;
     this.animation = 0;
     this.state = "dying";
     this.lives--;

@@ -77,7 +77,7 @@ export default class Game {
     this.tileHeight = 32;
     this.xTiles = 40;
     this.yTiles = 22;
-    this.cameraSpeed = 3.5;
+    this.cameraSpeed = 4;
     this.newPlayer = true;
     this.state = "menu";
     this.level = 1;
@@ -104,6 +104,9 @@ export default class Game {
 
     window.addEventListener("keydown", (e) => {
       if (this.state === "menu") {
+        if (e.code === "KeyT") {
+          this.cave = "t";
+        }
         if (e.code === "ArrowRight") {
           let code = this.cave.charCodeAt(0);
           code++;
@@ -144,14 +147,16 @@ export default class Game {
 
     if (this.state === "menu") this.player = new Player(0, 0, this.board);
 
-    this.spritesheet.src = `./assets/sprites_${this.cave}.png`;
+    this.spritesheet.src = `./assets/sprites_${
+      this.cave === "t" ? "a" : this.cave
+    }.png`;
     this.animationFrame = 0;
 
     // clearInterval(this.renderInterval);
     // clearInterval(this.animationInterval);
+    this.state = "level";
     this.createBoard();
     this.setCameraDest();
-    this.state = "level";
   }
 
   nextLevel() {
@@ -161,7 +166,16 @@ export default class Game {
   }
 
   createBoard() {
-    this.map = maps[(this.cave + "_" + this.level) as keyof typeof maps];
+    let keys = Object.keys(maps);
+    let mapname = this.cave + "_" + this.level;
+    if (!keys.includes(mapname)) {
+      console.log("this map doesnt exist");
+
+      this.state = "menu";
+      this.loading = "none";
+      return;
+    }
+    this.map = maps[mapname as keyof typeof maps];
     this.player.value = parseInt(this.map.split(";")[0].split("-")[1]);
     this.mapGoal = parseInt(this.map.split(";")[0].split("-")[0]);
     this.player.currGoal = this.mapGoal;
@@ -414,7 +428,13 @@ export default class Game {
             else if (tile === "w")
               this.board[i][j] = new Tile(j, i, "wall", this.board);
             else if (tile === "f")
-              this.board[i][j] = new Firefly(j, i, this.board);
+              this.board[i][j] = new Firefly(j, i, this.board, "down");
+            else if (tile === "h")
+              this.board[i][j] = new Firefly(j, i, this.board, "right");
+            else if (tile === "j")
+              this.board[i][j] = new Firefly(j, i, this.board, "up");
+            else if (tile === "k")
+              this.board[i][j] = new Firefly(j, i, this.board, "left");
             else if (tile === "u") {
               this.board[i][j] = new Butterfly(j, i, this.board);
             } else if (tile === "a")
@@ -453,6 +473,7 @@ export default class Game {
       this.flashed = true;
     }
     if (this.player.x === this.endX && this.player.y === this.endY) {
+      this.player.state = "loading";
       this.nextLevel();
     }
     if (amoebaParent) amoebaParent.children = amoebas;

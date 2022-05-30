@@ -58,9 +58,10 @@ export default class Amoeba implements IPhysicsBody {
     }
 
     let neighbours = getNeighbours(this.x, this.y, this.board);
-    let chance = 1 / 100;
+    let chance = 1 / 120;
     if (this.isParent) if (this.children.length === 1) chance = 1 / 50;
-    if (avalCounter > 10) chance = 1 / 200;
+    if (avalCounter > 7) chance = 1 / 150;
+    if (avalCounter > 10) chance = 1 / 250;
     if (avalCounter > 20) chance = 1 / 400;
 
     for (let neighbour of neighbours) {

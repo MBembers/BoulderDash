@@ -9,8 +9,9 @@ export default class Firefly extends Enemy {
   board: Entity[][];
   sprite: string;
   fallInterval: NodeJS.Timer;
-  constructor(x: number, y: number, board: Entity[][]) {
+  constructor(x: number, y: number, board: Entity[][], direction: string) {
     super(x, y, board, "left");
+    this.direction = direction;
     this.type = "firefly";
     this.color = "red";
     this.sprite = "firefly0";

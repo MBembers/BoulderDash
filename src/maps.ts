@@ -1,6 +1,6 @@
 export const maps = {
   a_1:
-    "12-10;" +
+    "12-10-15;" +
     "tttttttttttttttttttttttttttttttttttttttt" +
     "txxxxxxcxxdxbcxxxxxbxbxxxxxxxcxxxxbxxxxt" +
     "txbsbxxxxxxcxxxxxxxxxbdxxbxxxxcxxxxxcxxt" +
@@ -24,7 +24,7 @@ export const maps = {
     "txdxxxxcxxxxxcxxxxxxxxxcxbxxbxxxxbxxxbxt" +
     "tttttttttttttttttttttttttttttttttttttttt",
   b_1:
-    "10-20;" +
+    "10-20-50;" +
     "tttttttttttttttttttttttttttttttttttttttt" +
     "txbxxbxxwxbxxxdxwxxxcxbxwbxxxxxxwxxbbxxt" +
     "txxxxxxxwxxxxxxbwbbxcxxxwcxxdxxxwxxxxbxt" +
@@ -48,7 +48,7 @@ export const maps = {
     "txbxxxxcwxxcxxbxwxexcxxxwxxxxbxbwxxxxcxt" +
     "tttttttttttttttttttttttttttttttttttttttt",
   c_1:
-    "24-15;" +
+    "24-15-0;" +
     "tttttttttttttttttttttttttttttttttttttttt" +
     "txxbxxxxxwxxbxwxxxwwbxxwxdxxxwbxxbxbxxxt" +
     "twbsxxxxxwxxbxwxdxxxxbxwwxxbxwwbxxxxxxxt" +
@@ -72,6 +72,102 @@ export const maps = {
     "twxxbxwwxxxxwbbbdxxdxwxwbxxwbwxxwbxxdwbt" +
     "tttttttttttttttttttttttttttttttttttttttt",
   d_1:
+    "36-5-20;" +
+    "tttttttttttttttttttttttttttttttttttttttt" +
+    "tsxxxxxbxxxxxxxxxxxxxxxxxxxxbxxxxxxxxbxt" +
+    "txxxxxbxxxxxxxxxxxxxxbxxxxxxxxxxxxxxxxxt" +
+    "txxxxxxxxbxxbxxxxxxxxxxxxxxxxxxxxxxxxxxt" +
+    "tbxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxt" +
+    "txxxxxxxxxxxxxxxxxxxbxxxxxxxxxxxxxxxxxxt" +
+    "txbxxxxxxxxxxxxxxxxxxxxxbxxxxxxxxxbxxxxt" +
+    "txxbxxxxxbxxxxxxxxxxxbxxbxxxxxxxxxxxxxbt" +
+    "txxxxxxbxxxxxxbxxxxxxxxxxxxxxxxxxxxxbxxt" +
+    "txxxxxxxxcuxxxbxxcuxxxxxxcuxxxxxxcuxxxxt" +
+    "txxxxxxxxccxxxbxxccxxxxxxccxxxxxxccxbxxt" +
+    "txxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxt" +
+    "txxxbxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxbxxxt" +
+    "txxxbxxxxxbxxxxxxxxxxxxxxxxxxxxxxxxxxxxt" +
+    "txxxxxxbxxxxxxxxxxxbxxxxxxxxxxxxxxxxxxbt" +
+    "txxxxxxxxxxxbxxxxxxxbxxxxxxxxxxxxxxxxxxt" +
+    "txxbxxxxxxxxxxxxxxbxxxxxxxxxxxxxxxxxxxxt" +
+    "txxxxxxxxxxxxxxxxxxxxxbxxxxxxxxxbxxxxxxt" +
+    "txxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxbxxbxxt" +
+    "txxxxbxxxxxxbxbbxxxxxxxxxxxxxxxxxxbxxxxt" +
+    "txxxxxxxxxxxbxbbxxxxxxxxxbxxbxbxxxxxxxet" +
+    "tttttttttttttttttttttttttttttttttttttttt",
+  e_1:
+    "4-50-90;" +
+    "tttttttttttttttttttttttttttttttttttttttt" +
+    "tsxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxt" +
+    "txxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxt" +
+    "txxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxt" +
+    "txxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxt" +
+    "txxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxt" +
+    "txxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxt" +
+    "txxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxt" +
+    "txxxxxxxccfxxxxxccfxxxxxccfxxxxxccfxxxxt" +
+    "txxxxxxxcccxxxxxcccxxxxxcccxxxxxcccxxxxt" +
+    "txxxxxxxcdcxxxxxcdcxxxxxcdcxxxxxcdcxxxxt" +
+    "txxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxt" +
+    "txxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxt" +
+    "txxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxt" +
+    "txxxxxxxccfxxxxxccfxxxxxccfxxxxxccfxxxxt" +
+    "txxxxxxxcccxxxxxcccxxxxxcccxxxxxcccxxxxt" +
+    "txxxxxxxcdcxxxxxcdcxxxxxcdcxxxxxcdcxxxxt" +
+    "txxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxt" +
+    "txxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxt" +
+    "txxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxt" +
+    "txxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxe" +
+    "tttttttttttttttttttttttttttttttttttttttt",
+  f_1:
+    "4-40-60;" +
+    "tttttttttttttttttttttttttttttttttttttttt" +
+    "twwwwwwwwwxxxxbxbxxbxxxxxxxxbxwwwwwwwwwt" +
+    "twccccccccxxxxxxxxxxxbxxxxbxxxccccccccwt" +
+    "twcdjcccccxxbxxxxxxxxxxbxxxbxxcccccjdcwt" +
+    "twwwwwwwwwxxbxxxxxxxxbxxxxxxbxwwwwwwwwwt" +
+    "twccccccccxxxxxxbxxxbxxxxxxxbxccccccccwt" +
+    "twcdjcccccxxxxbxxxxxxbxbbxxxxxcccccjdcwt" +
+    "twwwwwwwwwxbbxxxxxxxxbxbbxxxxxwwwwwwwwwt" +
+    "twccccccccxxxxbxbxxxxbxxbxxxxxccccccccwt" +
+    "twcdjcccccxxxxbxbxxxxbxxbxxbxxcccccjdcwt" +
+    "twwwwwwwwwxbbxbxxbxxxxbxxxbxxxwwwwwwwwwt" +
+    "twccccccccxbbxbxxbxxxxxxxxxxxxccccccccwt" +
+    "twcdjcccccxxxxbxxbxxxxxxxxbxxxcccccjdcwt" +
+    "twwwwwwwwwxxxxxbxxxbxxxxbxxbxxwwwwwwwwwt" +
+    "txxxxbxbxxbxxxxxxxxbxxxxxbxxxxxxxxxxxxbt" +
+    "txxxxxxbxxxxbxxxxbxxbxbxxxbxxbxxxxxxxxxt" +
+    "txxbxxxxbxxxxxbxxxbxxxxxxxbxxbxxxxxxxxxt" +
+    "txxbxxxxxxxxbxxxxxxbxbbxxxxxxxxxbxxxxxxt" +
+    "tbxsxxxbxxxxxxxxxxxbxbbxxxxxxxxxbbxxbxet" +
+    "txxxxbxxxxxxbxbbxxxxxxbxxxxxxxxbxxbxxxxt" +
+    "tbbxxxxxxxxxbxbbxxxxxxxxxbxxbxbxbxxbxxxt" +
+    "tttttttttttttttttttttttttttttttttttttttt",
+  g_1:
+    "15-10-20;" +
+    "tttttttttttttttttttttttttttttttttttttttt" +
+    "txcxxcxbbxxxxxcxxbxcsxxxxcbbcbxxbxcxccxt" +
+    "tcxxbxcxxcxccxxxxcxbxbxcxxxccbxxbxdxxcxt" +
+    "tbxxxxxccxfxccxxxcxbxbxcxxxcwwwwwwwwwwwt" +
+    "txbxdxxxcxccxxxxxxcxxbbxxbxxxxcxcxxxcxct" +
+    "twwwwwwwwwwwwxbxcxxcccbxxcxxxxcxxxbxxxxe" +
+    "tbxcbxxxxxxcxxbxcxxxcxxbxccxxbxccfxxxxxt" +
+    "tbxcbxxxxxxcxxcbxxbxxxxcxxxbxxxxxxbxbbxt" +
+    "txxxcxxbccxxxcxxbxccxxbxccxxxcxxxxbxbbxt" +
+    "txxxcxxbxcxbxxxxcxxxfxxxxxxbxbxxccbxxbxt" +
+    "tccxxcbxxxxcxxbxbxxxxcxccxxxxxxxccdxxcxt" +
+    "txcxxxcxxcxccxxcxccxxxxxbbcbxxbxcxcbxxct" +
+    "txxcdxxbxbxxxxcxccxxxxxxbccbxxbxcxccxxxt" +
+    "txbxccxxbxccxxxcxbxbxcxxxccbxxcxxxxcxxxt" +
+    "txxxxccxbxccxxxcxbxbxcxbxcxcbxxcbxxxxcxt" +
+    "txccxxxxcxxxxccxxcbcbxxbxxxxcxxxbxxxcxbt" +
+    "txxxxxcxccxbbxcxxxccbxxcxbxxxcbxxbxbxxxt" +
+    "tcbxxxxxxcxxbxcxbxxxxcxccxxbxccbxxxxxxxt" +
+    "tcbxxxxxxcxxcbxxbxxxxcxxxbxxxxxxbxbbxxxt" +
+    "txcxxbxcxxxcxxbxccxaxxccxxxcxxxxbxbbxxxt" +
+    "txcxdbfxxbxxxxcxxxbxxxxxxbxbfxxxxxdbxxxt" +
+    "tttttttttttttttttttttttttttttttttttttttt",
+  t_1:
     "10-10;" +
     "tttttttttttttttttttttttttttttttttttttttt" +
     "txxxxxxxxxxxxxxxxbxxxxxxxxxxxxxxxxxxxxxt" +
@@ -79,7 +175,31 @@ export const maps = {
     "txxxxexxxxxxxxxxxcxxxxxxxxxxxxxxxxxxxxxt" +
     "txbbbbbbbbbbbxxxxcxxxxxxxxxxxxxxxxxxxxxt" +
     "tbxxxxxxxxxxxbxxxcxxxxxxxxxxxxxxxxxxxxxt" +
-    "tbxxxxaxuxfxxxbxxfxxxxxxxxxxxxxxxxxxxxxt" +
+    "tbxxxxaxuxuxxxbxxuxxxxxxxxxxxxxxxxxxxxxt" +
+    "tbxxxxxxxxxxbbxxxxxxxxxxxxxxxxxxxxxxxxxt" +
+    "txbbbbbbcccbxxxxxxxxxxxxxxxxxxxxxxxxxxxt" +
+    "txxxxxxxcccxxxxxxxxxxxxxxxxxxxxxxxxxxxxt" +
+    "txxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxt" +
+    "txxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxt" +
+    "txxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxt" +
+    "txxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxt" +
+    "txxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxt" +
+    "txxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxt" +
+    "txxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxt" +
+    "txxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxt" +
+    "txxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxt" +
+    "txxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxt" +
+    "txxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxt" +
+    "tttttttttttttttttttttttttttttttttttttttt",
+  t_2:
+    "10-10;" +
+    "tttttttttttttttttttttttttttttttttttttttt" +
+    "txxxxxxxxxxxxxxxxbxxxxxxxxxxxxxxxxxxxxxt" +
+    "txxxxsxxxxxxxxxxxcxxxxxxxxxxxxxxxxxxxxxt" +
+    "txxxxexxxxxxxxxxxcxxxxxxxxxxxxxxxxxxxxxt" +
+    "txbbbbbbbbbbbxxxxcxxxxxxxxxxxxxxxxxxxxxt" +
+    "tbxxxxxxxxxxxbxxxcxxxxxxxxxxxxxxxxxxxxxt" +
+    "tbxxxxaxuxuxxxbxxuxxxxxxxxxxxxxxxxxxxxxt" +
     "tbxxxxxxxxxxbbxxxxxxxxxxxxxxxxxxxxxxxxxt" +
     "txbbbbbbcccbxxxxxxxxxxxxxxxxxxxxxxxxxxxt" +
     "txxxxxxxcccxxxxxxxxxxxxxxxxxxxxxxxxxxxxt" +
