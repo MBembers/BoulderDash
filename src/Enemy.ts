@@ -1,3 +1,4 @@
+import { playAudio } from "./Audio";
 import { dirs, velocityX } from "./consts";
 import Diamond from "./Diamond";
 import Tile from "./Tile";
@@ -36,6 +37,7 @@ export default class Enemy implements IEnemy {
   }
 
   hit() {
+    playAudio("explode");
     this.animation = 0;
 
     let neighbours = getCornerNeighbours(this.x, this.y, this.board);
@@ -59,6 +61,13 @@ export default class Enemy implements IEnemy {
           );
 
         this.board[neighbour.y][neighbour.x].sprite = "clear";
+      }
+      for (let sus of getCornerNeighbours(
+        neighbour.x,
+        neighbour.y,
+        this.board
+      )) {
+        if (isPhysicsBody(sus)) sus.checkForFall();
       }
     }
   }

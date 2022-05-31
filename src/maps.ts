@@ -291,7 +291,7 @@ export const maps = {
     "tttttttttttttttttttttttttttttttttttttttt",
 
   t_1:
-    "9-10-50;" +
+    "2-10-50;" +
     "tttttttttttttttttttttttttttttttttttttttt" +
     "txxxxxxxxxxxxxxxxbxxxxxxxxxxxxxxxxxxxxxt" +
     "txxxxsxxxxxxxxxxxcxxxxxxxxxxxxxxxxxxxxxt" +
@@ -329,6 +329,30 @@ export const maps = {
     "txxxxxxxxxxxxxxxcccccccccccccccccxxxxxxt" +
     "txxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxt" +
     "txxxxxxxxxxxxxxxmmmmmmmmmmmmmxxxxxxxxxxt" +
+    "txxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxt" +
+    "txxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxt" +
+    "txxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxt" +
+    "txxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxt" +
+    "txxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxt" +
+    "txxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxt" +
+    "txxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxt" +
+    "txxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxt" +
+    "tttttttttttttttttttttttttttttttttttttttt",
+  u_1:
+    "9-10-50;" +
+    "tttttttttttttttttttttttttttttttttttttttt" +
+    "txxxxxxxxxxxxxxxxbxxxxxxxxxxxxxxxxxxxxxt" +
+    "txxxxsxxxxxxxxxxxcxxxxxxxxxxxxxxxxxxxxxt" +
+    "txxxxexxxxxxxxxxxcxxdddddddddddxxxxxxxxt" +
+    "txbbbbbbbbbbbxxxxcxxxxxxxxxxxxxxxxxxxxxt" +
+    "tbxxxxxxxxxxxbxxxcxxxxbxxxxxxxxxxxxxxxxt" +
+    "tbxxxxaxuxuxxxbxxuxxxxxxxxxxxxxxxxxxxxxt" +
+    "tbxxxxxxxxxxbbxxxxxxxxxxxxxxxxxxxxxxxxxt" +
+    "txbbbbbbcccbxxxxxxxxxxxxxxxxxxxxxxxxxxxt" +
+    "txxxxxxxcccxxxxxxxxxxxxxxxxxxxxxxxxxxxxt" +
+    "txxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxt" +
+    "txxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxt" +
+    "txxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxt" +
     "txxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxt" +
     "txxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxt" +
     "txxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxt" +

@@ -1,3 +1,5 @@
 import Game from "./Game";
-
-var game = new Game();
+document.getElementById("play").addEventListener("click", () => {
+  document.getElementById("play").remove();
+  var game = new Game();
+});

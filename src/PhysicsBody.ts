@@ -1,3 +1,4 @@
+import { playAudio } from "./Audio";
 import Boulder from "./Boulder";
 import Diamond from "./Diamond";
 import Tile from "./Tile";
@@ -113,6 +114,10 @@ export default class PhysicsBody implements IPhysicsBody {
             }
           }
           if (!moved && counter >= 0) {
+            if (this.type === "boulder" && this.fallcount > 0)
+              playAudio("boulder0");
+            if (this.type === "diamond" && this.fallcount > 0)
+              playAudio("diamond" + Math.floor(Math.random() * 8));
             this.fallcount = 0;
             clearInterval(this.fallInterval);
             this.fallInterval = undefined;

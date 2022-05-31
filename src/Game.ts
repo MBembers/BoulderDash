@@ -17,6 +17,7 @@ import {
   isTile,
 } from "./utils";
 import Amoeba from "./Amoeba";
+import { playAudio, stopAll, stopAudio } from "./Audio";
 
 export default class Game {
   canvasWidth: number;
@@ -135,12 +136,14 @@ export default class Game {
             if (this.player.state !== "dying") this.player.lives--;
             this.coverIndicator = 0;
             this.loading = "deloading";
+            playAudio("loading");
           }
           if (this.player.lives <= 0) {
             this.gameover = true;
             this.loading = "none";
             setTimeout(() => {
               this.loading = "deloading";
+              playAudio("loading");
             }, 1000);
           }
         }
@@ -149,9 +152,12 @@ export default class Game {
 
     this.renderInterval = setInterval(this.render.bind(this), 1000 / 60);
     this.animationInterval = setInterval(this.animations.bind(this), 1000 / 24);
+    playAudio("theme");
   }
 
   loadLevel() {
+    stopAudio("theme");
+    playAudio("loading");
     this.gameover = false;
     this.isMoving = false;
     this.boardWidth = this.xTiles * this.tileWidth;
@@ -359,11 +365,16 @@ export default class Game {
   animations() {
     let amoebas: Amoeba[] = [];
     let amoebaParent: Amoeba = undefined;
+    if (this.state === "menu") {
+      stopAll(false);
+      playAudio("theme");
+    }
     if (
       this.coverIndicator < 700 &&
       this.coverIndicator > 695 &&
       this.loading === "loading"
     ) {
+      playAudio("door");
       this.deathAnimation = 0;
       this.board[this.player.y][this.player.x] = this.player;
       for (let i = this.yTiles - 1; i >= 0; i--)
@@ -403,12 +414,16 @@ export default class Game {
               entity.sprite = "wall";
             }
             if (entity.type === "mwall" && entity.state === "active") {
+              playAudio("mwall");
               let animFrame = this.animationFrame / 2;
               if (Number.isInteger(animFrame))
                 entity.sprite = "mwall" + animFrame;
             }
+            if (entity.type === "mwall" && entity.state === "expired")
+              stopAudio("mwall");
           }
           if (isAmoeba(entity)) {
+            playAudio("amoeba");
             if (entity.isParent) amoebaParent = entity;
             amoebas.push(entity);
           }
@@ -549,6 +564,7 @@ export default class Game {
       this.player.state = "dying";
     }
     if (this.player.diamonds === this.player.currGoal && !this.flashed) {
+      playAudio("door");
       this.board[this.endY][this.endX].sprite = "otwall";
       this.ctx.fillStyle = "white";
       this.ctx.fillRect(
@@ -572,6 +588,7 @@ export default class Game {
   timeCounter() {
     clearInterval(this.timeInterval);
     this.timeInterval = setInterval(() => {
+      if (this.time < 10 && this.time > 0) playAudio("timeout" + this.time);
       if (this.time > 0) this.time--;
       if (this.isMagicWallActive) this.magicWallTime--;
       if (this.magicWallTime < 0) this.isMagicWallActive = false;
@@ -583,6 +600,10 @@ export default class Game {
   }
 
   spendTime() {
+    let audioTime = 3.168 * 1000;
+    let interval = 30;
+    if (this.time * interval > audioTime) interval = audioTime / this.time;
+    playAudio("spending");
     this.loading = "spending";
     this.player.state = "spending";
     this.player.move = "runright";
@@ -596,10 +617,12 @@ export default class Game {
       this.player.checkForLife();
       if (this.time === 0) {
         clearInterval(this.timeInterval);
+        playAudio("loading");
+        stopAudio("spending");
         this.loading = "deloading";
         this.coverIndicator = 0;
       }
-    }, 30);
+    }, interval);
   }
 
   setCameraDest() {

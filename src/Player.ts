@@ -1,3 +1,4 @@
+import { playAudio } from "./Audio";
 import Boulder from "./Boulder";
 import Tile from "./Tile";
 import { Entity, IPlayer } from "./types";
@@ -87,6 +88,7 @@ export default class Player implements IPlayer {
             const boulder = new Boulder(newX + xdir, this.y, this.board);
             this.board[this.y][newX + xdir] = boulder;
             boulder.checkForFall();
+            playAudio("boulder0");
             if (this.isSpaceHeld)
               this.board[this.y][newX] = new Tile(
                 newX,
@@ -102,6 +104,7 @@ export default class Player implements IPlayer {
       }
     } else {
       if (isDiamond(entity)) {
+        playAudio("collect");
         entity.delete();
         this.points += this.value;
         this.diamonds++;
@@ -113,6 +116,9 @@ export default class Player implements IPlayer {
         return;
       }
       // moved
+      let tile = this.board[newY][newX];
+      if (tile.type === "clear") playAudio("walkclear");
+      else if (tile.type === "dirt") playAudio("walkdirt");
       if (this.isSpaceHeld) {
         this.board[newY][newX] = new Tile(newX, newY, "clear", this.board);
         for (let e of getCornerNeighbours(newX, newY, this.board)) {
@@ -149,6 +155,7 @@ export default class Player implements IPlayer {
 
   hit() {
     // return;
+    playAudio("explode");
     this.animation = 0;
     this.state = "dying";
     this.lives--;
@@ -164,6 +171,13 @@ export default class Player implements IPlayer {
           this.board
         );
       this.board[neighbour.y][neighbour.x].sprite = "clear";
+      for (let sus of getCornerNeighbours(
+        neighbour.x,
+        neighbour.y,
+        this.board
+      )) {
+        if (isPhysicsBody(sus)) sus.checkForFall();
+      }
     }
   }
 
