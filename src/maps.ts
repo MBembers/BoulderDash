@@ -1,33 +1,9 @@
 export const maps = {
-  // a_1:
-  //   "12-10-15;" +
-  //   "tttttttttttttttttttttttttttttttttttttttt" +
-  //   "txxxxxxcxxdxbcxxxxxbxbxxxxxxxcxxxxbxxxxt" +
-  //   "txbsbxxxxxxcxxxxxxxxxbdxxbxxxxcxxxxxcxxt" +
-  //   "txxxxxxxxxxcxxbxxxxxbxbxxbxxxxxxxxbxxxxt" +
-  //   "tbxbbxxxxxxxxxbxxxxxxbxxbxxxxbxxxbxxxxxt" +
-  //   "tbxcbxxxxxxxxxcbxxbxxxxxxxxbxxxxxxbxbbxt" +
-  //   "txxxcxxbxxxxxxxxbxxxxxbxcbxxxxxxxxbxbbxt" +
-  //   "twwwwwwwwwwwwwwwwwwwwwwwwwwwwwwxxxbxxbxt" +
-  //   "txcxxxbxxdxcxxbxbxxxxxxxxxxdxbdxxxxxxcxt" +
-  //   "txxdxxxxxbxxxxxcxxxxxxxxbbcbxxbxxxxbxxxt" +
-  //   "txxxbxxbxbxxxxxxxxxxxxxxbcxbxxbxxxxxxxxt" +
-  //   "txbxxxxxbxxxxxxxxbbbxxxxxxxbxxcxdxxxxbxt" +
-  //   "txdxxcxxbxccxxxxxbxbdxxdxxxxbxxxbxxdxcxt" +
-  //   "txcbxxxxxxxxxxxxxxbcbxxbxxxxxxxxdxxxxxbt" +
-  //   "txxxxxxxxwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwt" +
-  //   "tcbxxxxxxxxxbxxxdxxxxbxxxxxbxxxbxxxxxxxt" +
-  //   "tcbxxxxxxxxxcbxxbxxxxxxxxbxxxxxxbxbbxxet" +
-  //   "txcxxbxxxxxxxxbxxxxxbxccxxxxdxxxbxbbxxxt" +
-  //   "txxxxbdxxbxxxxxxxxbxxxxxxbxbdxxxxxxbxxxt" +
-  //   "txxxcxxbxcxxbxbbxxxxxxxxxbxbdxxxxxxcxxbt" +
-  //   "txdxxxxcxxxxxcxxxxxxxxxcxbxxbxxxxbxxxbxt" +
-  //   "tttttttttttttttttttttttttttttttttttttttt",
   a_1:
     "12-10-15;" +
     "tttttttttttttttttttttttttttttttttttttttt" +
     "txxxxxxcxxdxbcxxxxxbxbxxxxxxxcxxxxbxxxxt" +
-    "txbsxddxexxcxxxxxxxxxbdxxbxxxxcxxxxxcxxt" +
+    "txbsbxxxxxxcxxxxxxxxxbdxxbxxxxcxxxxxcxxt" +
     "txxxxxxxxxxcxxbxxxxxbxbxxbxxxxxxxxbxxxxt" +
     "tbxbbxxxxxxxxxbxxxxxxbxxbxxxxbxxxbxxxxxt" +
     "tbxcbxxxxxxxxxcbxxbxxxxxxxxbxxxxxxbxbbxt" +
@@ -41,12 +17,36 @@ export const maps = {
     "txcbxxxxxxxxxxxxxxbcbxxbxxxxxxxxdxxxxxbt" +
     "txxxxxxxxwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwt" +
     "tcbxxxxxxxxxbxxxdxxxxbxxxxxbxxxbxxxxxxxt" +
-    "tcbxxxxxxxxxcbxxbxxxxxxxxbxxxxxxbxbbxxxt" +
+    "tcbxxxxxxxxxcbxxbxxxxxxxxbxxxxxxbxbbxxet" +
     "txcxxbxxxxxxxxbxxxxxbxccxxxxdxxxbxbbxxxt" +
     "txxxxbdxxbxxxxxxxxbxxxxxxbxbdxxxxxxbxxxt" +
     "txxxcxxbxcxxbxbbxxxxxxxxxbxbdxxxxxxcxxbt" +
     "txdxxxxcxxxxxcxxxxxxxxxcxbxxbxxxxbxxxbxt" +
     "tttttttttttttttttttttttttttttttttttttttt",
+  // a_1:
+  //   "12-10-15;" +
+  //   "tttttttttttttttttttttttttttttttttttttttt" +
+  //   "txxxxxxcxxdxbcxxxxxbxbxxxxxxxcxxxxbxxxxt" +
+  //   "txbsxddxexxcxxxxxxxxxbdxxbxxxxcxxxxxcxxt" +
+  //   "txxxxxxxxxxcxxbxxxxxbxbxxbxxxxxxxxbxxxxt" +
+  //   "tbxbbxxxxxxxxxbxxxxxxbxxbxxxxbxxxbxxxxxt" +
+  //   "tbxcbxxxxxxxxxcbxxbxxxxxxxxbxxxxxxbxbbxt" +
+  //   "txxxcxxbxxxxxxxxbxxxxxbxcbxxxxxxxxbxbbxt" +
+  //   "twwwwwwwwwwwwwwwwwwwwwwwwwwwwwwxxxbxxbxt" +
+  //   "txcxxxbxxdxcxxbxbxxxxxxxxxxdxbdxxxxxxcxt" +
+  //   "txxdxxxxxbxxxxxcxxxxxxxxbbcbxxbxxxxbxxxt" +
+  //   "txxxbxxbxbxxxxxxxxxxxxxxbcxbxxbxxxxxxxxt" +
+  //   "txbxxxxxbxxxxxxxxbbbxxxxxxxbxxcxdxxxxbxt" +
+  //   "txdxxcxxbxccxxxxxbxbdxxdxxxxbxxxbxxdxcxt" +
+  //   "txcbxxxxxxxxxxxxxxbcbxxbxxxxxxxxdxxxxxbt" +
+  //   "txxxxxxxxwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwt" +
+  //   "tcbxxxxxxxxxbxxxdxxxxbxxxxxbxxxbxxxxxxxt" +
+  //   "tcbxxxxxxxxxcbxxbxxxxxxxxbxxxxxxbxbbxxxt" +
+  //   "txcxxbxxxxxxxxbxxxxxbxccxxxxdxxxbxbbxxxt" +
+  //   "txxxxbdxxbxxxxxxxxbxxxxxxbxbdxxxxxxbxxxt" +
+  //   "txxxcxxbxcxxbxbbxxxxxxxxxbxbdxxxxxxcxxbt" +
+  //   "txdxxxxcxxxxxcxxxxxxxxxcxbxxbxxxxbxxxbxt" +
+  //   "tttttttttttttttttttttttttttttttttttttttt",
   b_1:
     "10-20-50;" +
     "tttttttttttttttttttttttttttttttttttttttt" +
@@ -214,6 +214,80 @@ export const maps = {
     "txcbxxfxbxxxxcxccxxxxxxbbcbxxbxxxccxxxbt" +
     "tbxccxxbxccxxxxxbxbxcxxxccbxxbxxxxcxxxbt" +
     "txxxccxbxbcxxxxxbxbxxxxxcccxxcxbxxxxbxxt" +
+    "tttttttttttttttttttttttttttttttttttttttt",
+
+  i_1:
+    "75-5-10;" +
+    "tttttttttttttttttttttttttttttttttttttttt" +
+    "tdddbbddbddbxbbbbdbddxddbddbddddbbdbdbbt" +
+    "tdbbdddbbbdbddbbbbbbdbbdxdbdbbbbdbddbbdt" +
+    "tddbbbbbbbdbddbbxbbbdbbdddbdbxbbdbbbddbt" +
+    "tbbdbddbbbbbbdbbdddxxddbbdbddbbdbddxbbdt" +
+    "tbbdbddbbbbbbdbbdxdbdbbbbdbdbdbbddbbdbdt" +
+    "tdddbbdbdxddbbddbbdddbbdbdbbbxdbddbbdbdt" +
+    "tbbbbbdbbddddxxbbbdbddxbdbddbxbbddddddbt" +
+    "tdbddwwwwwwwxwwwwwdbbbbdbwwwwwwxwwwwwwbt" +
+    "tdxddwcccccccccccwbddbbbdwcccccccccccwbt" +
+    "tdbdbwcseccccccccwbddbbbdwcccccccccccwbt" +
+    "tdbbdwcccccccccccwbxbbddbwcccccccccccwbt" +
+    "tdbbdwcccccccccccwddddbdbwcccccccccccwdt" +
+    "tbdddwcccccccccccwdbbdxdbwcccccccccccwdt" +
+    "tbbbbwcccccccccccwdbbddbbwcccccccccccwbt" +
+    "tdbddwcccccccccccwxbdbbdbwcccccccccccwbt" +
+    "tdbddwcccccccccccwwwwwwwwwcccccccccccwbt" +
+    "tbbbdwcccccccccccccccccccccccccccccccwbt" +
+    "tbbbdwcccccccccccwddxbdbdwcccccccccccwbt" +
+    "tddbbwcccccccccccwbbbdbddwcccccccccccwbt" +
+    "tddxxwcccccccccccwdbbbdddwcccccccccccwdt" +
+    "tttttttttttttttttttttttttttttttttttttttt",
+
+  j_1:
+    "12-25-60;" +
+    "tttttttttttttttttttttttttttttttttttttttt" +
+    "txxxxxxxxxxxxsxxxxxxxxxxxxxxxxxxxxxxxxxt" +
+    "twwwwwwwwwwwwcwwwwwwwwxxxxxxxxxxxxxxxxxt" +
+    "twxxxxdxxxxxxxxxxxxxdwxxxxxxxxxxxxxxxxxt" +
+    "twxwcwxwwwwwwcwwwwwwxwxxxxxxxxxxxxxxxxxt" +
+    "twxwfwxwdxxxxxxxxxdwxwxxxxxxxxxxxxxxxxxt" +
+    "twxwfwxwxwwwwcwwwwxwxwxxxxxxxxxxxxxxxxxt" +
+    "twxwfwxwxwdxxxxxdwxwxwxxxxxxxxxxxxxxxxxt" +
+    "twxwfwxwxwxwwcwwxwxwxwxxxxxxxxxxxxxxxxxt" +
+    "twxwfwcwcwxwcccwcwcwcwxxxxxxxxxxxxxxxxxt" +
+    "twxwfwfwfwxwfffwfwfwfwxxxxxxxxxxxxxxxxxt" +
+    "twxwfwcwcwxwcccwcwcwcwxxxxxxxxxxxxxxxxxt" +
+    "twxwfwxwxwxwwwwwxwxwxwxxxxxxxxxxxxxxxxxt" +
+    "twxwfwxwxwdxxxxxdwxwxwxxxxxxxxxxxxxxxxxt" +
+    "twxwdwxwxwwwwwwwwwxwxwxxxxxxxxxxxxxxxxxt" +
+    "twxwdwxwdxxxxxxxxxdwxwxxxxxxxxxxxxxxxxxt" +
+    "twxwdwxwwwwwwwwwwwwwxwxxxxxxxxxxxxxxxxxt" +
+    "twxwdwdxxxxxxxxxxxxxdwxxxxxxxxxxxxxxxxxt" +
+    "twwwwwwwwwwwwwwwwwwwwwxxxxxxxxxxxxxxxxxt" +
+    "txxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxt" +
+    "txxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxe" +
+    "tttttttttttttttttttttttttttttttttttttttt",
+  k_1:
+    "6-50-0;" +
+    "tttttttttttttttttttttttttttttttttttttttt" +
+    "tbxbdxbbbxwxxxdbbxxbwxxxdxxxbxwxxxdbxbxt" +
+    "txxxcxbxbxwxxxbcbxxbwbxxxxbxxbwbxxxbxbbt" +
+    "txxxxcxxbbwxbxxxxbxxwxxbxcbbxbwxxxxbxbbt" +
+    "tbxbxxcbbbwxbxxxxcxxwbxxxxxxbxwbxxxxxxbt" +
+    "tbxcxxxbxxwxccxxbxbbwxxxxxxxbxwbxxxxxxct" +
+    "tbbxxbxxxxwxxxbxxxxxwbxbbxxxxxwbxxbcbxxt" +
+    "txxbxbbxxbwbbxxxbxxxwbxbbxxxxxwbxxbxcxwt" +
+    "txxbxxxbxxwxxxbxbxxbwbxxbxcxbbwxcbxxfwbt" +
+    "tbxbxwwwwwwwwwfwwwwwwwwwwwwwwwwwwwxxwxct" +
+    "txbxccxxxxxbbbbxxbxbxbbxxbbxxxcbxxbwbxxt" +
+    "tbxbbxxxxxxbbbbxxbxcxcbxxxbxxbxbbxwbxbbt" +
+    "txcxbxbxcwxxbbbxxbxxxxcxxxbxxxxxbwxbxbbt" +
+    "txcxbxbxcwbxwwwwwwwwwwwwwwwwwbbxwxxbxxxt" +
+    "tbxxcbbbxwbxxxxbxxxbxxxcxbbxxxxwxbxbbxbt" +
+    "tbxxxbbbxwbxbxxxcbxxbxbxxxbxbbwxxxxxbxet" +
+    "tcxbxxxxbwccxxbxbbbxxxxxxxbxbwxxxxxxcxxt" +
+    "txxbxxxxcwxxbxxxxxxbxbbxxxxxwbxxbxbxxxbt" +
+    "tbxbbxxbxwbxxxbxxxxbsbbxxxxxxbxxbfxxbxxt" +
+    "tbxxxbxxxwxxbxbfxxxxxxbxxxcbxxcbxxbdbxxt" +
+    "tbbxdxcxxwxxbxbbxxxxxxbxxbxcbxfxbbxbxxxt" +
     "tttttttttttttttttttttttttttttttttttttttt",
 
   t_1:

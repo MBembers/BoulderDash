@@ -32,6 +32,7 @@ export default class Player implements IPlayer {
   currGoal: number;
   nuts: number;
   isSpaceHeld: boolean;
+  livesGiven: number;
 
   constructor(x: number, y: number, board: Entity[][]) {
     this.board = board;
@@ -47,6 +48,7 @@ export default class Player implements IPlayer {
     this.lives = 3;
     this.value = 10;
     this.nextValue = 15;
+    this.livesGiven = 0;
   }
 
   levelSetup(x: number, y: number) {
@@ -105,9 +107,7 @@ export default class Player implements IPlayer {
         this.diamonds++;
         if (this.currGoal === this.diamonds) this.value = this.nextValue;
 
-        if (this.points % 500 === 0 && this.points > 0) {
-          this.lives++;
-        }
+        this.checkForLife();
       }
       if (entity.type === "end" && this.currGoal > this.diamonds) {
         return;
@@ -123,6 +123,13 @@ export default class Player implements IPlayer {
       } else this.movePlayer(newX, newY);
     }
     // }
+  }
+
+  checkForLife() {
+    if (this.points > 500 * (this.livesGiven + 1)) {
+      this.livesGiven++;
+      this.lives++;
+    }
   }
 
   movePlayer(newX: number, newY: number) {
@@ -141,6 +148,7 @@ export default class Player implements IPlayer {
   }
 
   hit() {
+    // return;
     this.animation = 0;
     this.state = "dying";
     this.lives--;

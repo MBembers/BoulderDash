@@ -166,6 +166,7 @@ export default class Game {
     this.spritesheet.src = `./assets/sprites_${
       this.cave === "t" ? "a" : this.cave
     }.png`;
+    // if (this.cave === "k") this.spritesheet.src = `./assets/sprites_c.png`;
     this.animationFrame = 0;
     this.magicWallTime = 30;
     this.isMagicWallActive = false;
@@ -306,7 +307,7 @@ export default class Game {
       this.ctx.fillRect(0, 0, this.canvasWidth, this.topBarHeight);
       if (this.gameover) {
         this.drawText("  g a m e  o v e r", "left", "w", 0, 0);
-      } else if (this.time <= 0) {
+      } else if (this.time <= 0 && this.loading !== "deloading") {
         this.drawText(" o u t  o f  t i m e", "left", "w", 0, 0);
       } else if (
         (this.loading === "none" || this.loading === "spending") &&
@@ -417,7 +418,7 @@ export default class Game {
           if (isDiamond(entity))
             if (entity.ready) entity.sprite = entity.type + this.animationFrame;
 
-          if (entity.type === "player") {
+          if (entity.type === "player" && this.loading !== "loading") {
             entity.sprite = "player";
             if (this.player.state === "move") {
               entity.sprite = this.player.move + this.animationFrame;
@@ -439,8 +440,9 @@ export default class Game {
             this.loading === "loading" &&
             this.coverIndicator < 700
           ) {
-            this.player.sprite = "death" + this.deathAnimation;
-            this.deathAnimation++;
+            if (Number.isInteger(this.deathAnimation))
+              this.player.sprite = "death" + this.deathAnimation;
+            this.deathAnimation += 0.5;
           }
           if (entity.type === "death") {
             if (Number.isInteger(entity.animation))
@@ -574,6 +576,7 @@ export default class Game {
       if (this.isMagicWallActive) this.magicWallTime--;
       if (this.magicWallTime < 0) this.isMagicWallActive = false;
       if (this.time <= 0) {
+        this.player.state = "deloading";
         clearInterval(this.timeInterval);
       }
     }, 1000);
@@ -590,6 +593,7 @@ export default class Game {
       this.player.move = "runright";
       this.time--;
       this.player.points++;
+      this.player.checkForLife();
       if (this.time === 0) {
         clearInterval(this.timeInterval);
         this.loading = "deloading";
