@@ -81,6 +81,7 @@ export default class Enemy implements IEnemy {
         }
         if (isPlayer(e)) {
           this.delete();
+          // this.hit();
           e.hit();
         }
       }

@@ -289,7 +289,102 @@ export const maps = {
     "tbxxxbxxxwxxbxbfxxxxxxbxxxcbxxcbxxbdbxxt" +
     "tbbxdxcxxwxxbxbbxxxxxxbxxbxcbxfxbbxbxxxt" +
     "tttttttttttttttttttttttttttttttttttttttt",
-
+  l_1:
+    "19-20-0;" +
+    "tttttttttttttttttttttttttttttttttttttttt" +
+    "tbxcxxxbbxxxxxbxbxxbxxxxxxxxbxxxxxbxxdxt" +
+    "txxxxxdxbxxxxxxxcxxxxbxxxxbxxbxxxxxcxxbt" +
+    "txxxxxxxbdwxbxwxxcwxxxwbxxxbxxxcfxxcxxct" +
+    "tdwwwwwwwwwwwxwxxxwxxbwxxxxxbxxccxxxxxxt" +
+    "tbxxxxxxxxwxxxwxbxwcdxwxxxxxbxxxxxxxxxxt" +
+    "tbbxxbxxxxwxxxwxxxwxxbwbbxxxxxxbxxdxxxxt" +
+    "txxbxxxxxbwbbxwxxxwxxbwbbxxxxxxxxxbxxxbt" +
+    "txwwwwwwwwwwwxwxbxwcxbwxbxxxxbxcfxxxdxbt" +
+    "tbxbxxxxxxwxxxwxbxwxxbwxbxxdxxxccxxxbxxt" +
+    "txbxxxxxxxwbbcwxxdwxxcwxxxbxxxxxxxdxbxxt" +
+    "tcxxxxxxxxwbbcwxxbwxxxwxxxcxxbxxxxxbxxxt" +
+    "txwwwwwwwwwwwwwwwbwxxxwxxxbxxxxxxxxbxcct" +
+    "txxxbxbxxxwxxxwbxxwbxxwxbxxbxbxcfxxxxxxt" +
+    "txxxxbcbxxwxxxwxxxwdxxwxxbcxxxxccxxxxxdt" +
+    "txxxxcxbxxwxdxwxxbwxbxwxxxbxcbxxxxxxxxxt" +
+    "txwwwwwwwwwwwxwxxxwxxxwxxxbxcbxxxxxxxxxt" +
+    "txxbxxxxxxwxbxwxxxwbxbwxxxxxxcxxbxxxxxxt" +
+    "tbxsxxxbxcwxxxwxxxwbxbwxxxxxxxxxbdxxbxxt" +
+    "txxxxbxxxxwxbxwdxxwxxxwxxxxcxxxbxxdxcxxt" +
+    "tbbxxxxxxxwxbxwdxxwxxxwxxbxxdxdxbxxbxxxe" +
+    "tttttttttttttttttttttttttttttttttttttttt",
+  m_1:
+    "50-5-8;" +
+    "tttttttttttttttttttttttttttttttttttttttt" +
+    "tbxxxxxbbxexxxxxbxsbaxxxxxxxbxxxxxxxbxbt" +
+    "txxxxxbxxxxxxxxxxxxxxxxbxxxxxxxxxxbxxxxt" +
+    "txxxbxbxxxxxbxxxxxxxxxbxxxxxxxbxxxxxxbxt" +
+    "txxxbxxxxbxxxxxxxxxxxxxbxxbbxbxxxxbxxxxt" +
+    "txxxxxxxbxxxxbxxxxxxxxxbxxbbxxxxxbxxbxxt" +
+    "txxxbxxxxxxxxxxbxxxxxxxbxxxbxxxxxxxxxbxt" +
+    "txxxxxxxxbxxxxxxbxxxxbxxxbxxxxxbxxxxbxxt" +
+    "txxbxxxxxbxxxxxxxxxxxxxxxxxbxxxxxbxxxbxt" +
+    "txxxxxxxbxxxxbxxbxxxxxxbxxxxxxxbxxxbxxxt" +
+    "txxxxxbxxbxxxbxxbxxxxxbxxxxbxxxxxxxxxxxt" +
+    "txxbxxxxbxxbxxxbxxxbxxxxxxbxxxbxxxbxxxxt" +
+    "txxxxbxxxbxxxxbxxxxxxbxxxxbxxxxxxxxxbxxt" +
+    "txxxxbxxxxxxxbxxbxxxbxxxxxxbxxxbxxxbxxxt" +
+    "txxxbxxbxxxxxbxbxxxxbxxxxxbxxbxxxxxxxxbt" +
+    "txxxxxxbxxxbxxxxxbxxxxbxxxxxbxxxxxbxxxxt" +
+    "txxbxwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwxxxxt" +
+    "txxbxuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuxxxxt" +
+    "tbxxxbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbxxxxt" +
+    "txxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxt" +
+    "txbxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxbxxxt" +
+    "tttttttttttttttttttttttttttttttttttttttt",
+  n_1:
+    "30-10-20;" +
+    "tttttttttttttttttttttttttttttttttttttttt" +
+    "txxsxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxt" +
+    "txxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxt" +
+    "txxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxt" +
+    "txxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxt" +
+    "txxxxxxxxxxxxxxxxxxxxxfxfxfxfxfxfxxxxxxt" +
+    "txxxxxxxxxxxxxxxxxxxxxbxbxbxbxbxbxxxxxxt" +
+    "txxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxt" +
+    "txxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxt" +
+    "txxxxxxxxxxfxcxcxcxcxcxxxxxxxxxxxxxxxxxt" +
+    "txxxxxxxxxxcxcxcxcxcxcxxxxxxxxxxxxxxxxxt" +
+    "txxxxxxxxxxcxfxcxcxcxcxxxxxxxxxxxxxxxxxt" +
+    "txxxxxxxxxxcxcxcxcxcxcxxxxxxxxxxxxxxxxxt" +
+    "txxxxxxxxxxcxcxfxcxcxcxxxxxxxxxxxxxxxxxt" +
+    "txxxxxxxxxxcxcxcxcxcxcxxxxxxxxxxxxxxxxxt" +
+    "txxxxxxxxxxcxcxcxfxcxcxxxxxxxxxxxxxxxxxt" +
+    "txxxxxxxxxxcxcxcxcxcxcxxxxxxxxxxxxxxxxxt" +
+    "txxxxxxxxxxcxcxcxcxfxcxxxxxxxxxxxxxxxxxt" +
+    "txxxxxxxxxxcxcxcxcxcxcxxxxxxxxxxxxxxxxxe" +
+    "txxxxxxxxxxcxcxcxcxcxfxxxxxxxxxxxxxxxxxt" +
+    "txxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxt" +
+    "tttttttttttttttttttttttttttttttttttttttt",
+  o_1:
+    "15-10-20;" +
+    "tttttttttttttttttttttttttttttttttttttttt" +
+    "tbxbbxxccbxxbxxbxbxxsbxxbxbbxxbxbbxxxbxt" +
+    "txwxbbxxxxxxxxbbxxbxbxxxwxxxbxxxxxxxbxbt" +
+    "tbbwxbxxxbxxxbxbxxxxbbxwbxxxxxxxxxxbxbft" +
+    "txxxwbxxbxbxfxbxxxxxxbwbxxxxxccbbbbbxxxt" +
+    "tbbxxwxxxxbxxxbxxxxbxwxxxbbbxcxbbbbxbxxt" +
+    "txcbxxwbxxbxxbxxxxbxwxxbbxbxbxbbbbbxxbxt" +
+    "txbbbxxwxbxxxxxxxxxwxbxbxxxxbbbbxxxbxxxt" +
+    "txxxbbbbwxxxxxbbxxwxxxxxxxxbbbxxxxxxxbbt" +
+    "txxxxbbxxwxxbxbxxwbbbbbxxxxxbbbxbxbxxxxt" +
+    "txbbxxxxxxwxxxbxwbbxxxxxbxxxxxbxbxxxbxxt" +
+    "txbbxxxxxxbwxxxwxxcbxcbxbbbxcbxbcxbcxxxt" +
+    "txxxbxxbbxbxxxxbxxxbxxxbxbbxxcxcxcbbbxxt" +
+    "txxbxxxcbxbxmmmxxbxxxxxxbxxxxbxxxxxxxbxt" +
+    "txxbbxxbxbxxbxbxbxcxbbxbcbxbcbbxbxbxxxxt" +
+    "txxxxxbbbxxxxxxxxbbxccxbbbxxxbxbbxxccxbt" +
+    "txbxbbxxbxxbxxxxxxxxxbxbxcxxbbbbbbbxxxxt" +
+    "txxxfbxbxcxxbbxxbbxxxxxxxxxbxbbxxxbbxxxt" +
+    "txxxxbbbbxccxxxbxbxxxxxbbxbxbxbbbxbxbbxt" +
+    "tbxxxbxxxxxxxbxcxxxbxccxbxxxxbxccxxxbbxt" +
+    "txxxbbxxbxxbxxxxbxxbexbxxxxbbbbxxbbxxxxt" +
+    "tttttttttttttttttttttttttttttttttttttttt",
   t_1:
     "2-10-50;" +
     "tttttttttttttttttttttttttttttttttttttttt" +

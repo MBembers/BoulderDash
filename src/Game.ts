@@ -116,7 +116,7 @@ export default class Game {
         if (e.code === "ArrowRight") {
           let code = this.cave.charCodeAt(0);
           code++;
-          if (code > 109) code = 112;
+          if (code > 112) code = 112;
           this.cave = String.fromCharCode(code);
         }
         if (e.code === "ArrowLeft") {
@@ -172,7 +172,7 @@ export default class Game {
     this.spritesheet.src = `./assets/sprites_${
       this.cave === "t" ? "a" : this.cave
     }.png`;
-    // if (this.cave === "k") this.spritesheet.src = `./assets/sprites_c.png`;
+    if (this.cave === "n") this.spritesheet.src = `./assets/sprites_k.png`;
     this.animationFrame = 0;
     this.magicWallTime = 30;
     this.isMagicWallActive = false;
@@ -619,6 +619,7 @@ export default class Game {
         clearInterval(this.timeInterval);
         playAudio("loading");
         stopAudio("spending");
+        stopAudio("mwall");
         this.loading = "deloading";
         this.coverIndicator = 0;
       }
