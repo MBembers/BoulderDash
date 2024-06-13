@@ -8,14 +8,7 @@ import { Entity } from "./types";
 import Butterfly from "./Butterfly";
 import Firefly from "./Firefly";
 import { maps } from "./maps";
-import {
-	compareCoords,
-	isAmoeba,
-	isDiamond,
-	isEnemy,
-	isPhysicsBody,
-	isTile,
-} from "./utils";
+import { compareCoords, isAmoeba, isDiamond, isEnemy, isPhysicsBody, isTile } from "./utils";
 import Amoeba from "./Amoeba";
 import { playAudio, stopAll, stopAudio } from "./Audio";
 
@@ -131,11 +124,7 @@ export default class Game {
 				if (this.level > 3) this.level = 3;
 				if (e.code === "Space") this.loadLevel();
 			} else if (this.state === "level") {
-				if (
-					e.code === "Escape" &&
-					this.loading === "none" &&
-					!this.gameover
-				) {
+				if (e.code === "Escape" && this.loading === "none" && !this.gameover) {
 					if (this.player.lives > 0) {
 						if (this.player.state !== "dying") this.player.lives--;
 						this.coverIndicator = 0;
@@ -155,10 +144,7 @@ export default class Game {
 		});
 
 		this.renderInterval = setInterval(this.render.bind(this), 1000 / 60);
-		this.animationInterval = setInterval(
-			this.animations.bind(this),
-			1000 / 24
-		);
+		this.animationInterval = setInterval(this.animations.bind(this), 1000 / 24);
 		playAudio("theme");
 	}
 
@@ -176,11 +162,8 @@ export default class Game {
 
 		if (this.state === "menu") this.player = new Player(0, 0, this.board);
 
-		this.spritesheet.src = `./dist/assets/sprites_${
-			this.cave === "t" ? "a" : this.cave
-		}.png`;
-		if (this.cave === "n")
-			this.spritesheet.src = `./dist/assets/sprites_k.png`;
+		this.spritesheet.src = `./dist/assets/sprites_${this.cave === "t" ? "a" : this.cave}.png`;
+		if (this.cave === "n") this.spritesheet.src = `./dist/assets/sprites_k.png`;
 		this.animationFrame = 0;
 		this.magicWallTime = 30;
 		this.isMagicWallActive = false;
@@ -258,11 +241,7 @@ export default class Game {
 		if (this.state === "menu") {
 			for (let i = 0; i < 288 / 16; i++) {
 				for (let j = 1; j < this.canvasWidth / 16; j++) {
-					this.ctx.drawImage(
-						this.bgtile as CanvasImageSource,
-						j * 16 + bgX,
-						i * 16 - this.bgAnimation + bgY
-					);
+					this.ctx.drawImage(this.bgtile as CanvasImageSource, j * 16 + bgX, i * 16 - this.bgAnimation + bgY);
 				}
 			}
 			this.ctx.drawImage(this.title, 32, this.topBarHeight + 32);
@@ -270,61 +249,32 @@ export default class Game {
 			this.ctx.fillRect(0, this.topBarHeight, this.canvasWidth, 16);
 			this.ctx.fillRect(0, 288 + this.topBarHeight, this.canvasWidth, 16);
 			this.ctx.fillRect(0, this.topBarHeight, 16, 288 + 16);
-			this.ctx.fillRect(
-				this.canvasWidth - 16,
-				this.topBarHeight,
-				16,
-				288 + 16
-			);
+			this.ctx.fillRect(this.canvasWidth - 16, this.topBarHeight, 16, 288 + 16);
 
 			this.drawText("  stages designed", "left", "w", 0, 288 + 33);
 			this.drawText(" by mapasoft c 1984", "left", "w", 0, 288 + 49);
 			this.drawText("press button to play", "left", "w", 0, 288 + 65);
 			this.drawText(`1 player 1 joystick`, "left", "w", 0, 288 + 81);
-			this.drawText(
-				` cave: ${this.cave} level: ${this.level}`,
-				"left",
-				"w",
-				0,
-				288 + 97
-			);
+			this.drawText(` cave: ${this.cave} level: ${this.level}`, "left", "w", 0, 288 + 97);
 		} else if (this.state === "level" || this.state === "spending") {
 			this.setCameraDest();
 			this.updateCamera();
 			for (let i = 0; i < this.yTiles; i++) {
 				for (let j = 0; j < this.xTiles; j++) {
 					let entity = this.board[i][j];
-					let x =
-						j * this.tileWidth +
-						(this.canvasWidth / 2 - this.cameraX);
-					let y =
-						i * this.tileHeight +
-						(this.canvasHeight / 2 - this.cameraY) +
-						this.topBarHeight;
-					if (
-						entity.type === "ltwall" &&
-						(this.loading === "loading" ||
-							this.loading === "deloading")
-					) {
+					let x = j * this.tileWidth + (this.canvasWidth / 2 - this.cameraX);
+					let y = i * this.tileHeight + (this.canvasHeight / 2 - this.cameraY) + this.topBarHeight;
+					if (entity.type === "ltwall" && (this.loading === "loading" || this.loading === "deloading")) {
 						this.drawSprite(entity.sprite, x, y - this.bgAnimation);
-						this.drawSprite(
-							entity.sprite,
-							x,
-							y + 32 - this.bgAnimation
-						);
+						this.drawSprite(entity.sprite, x, y + 32 - this.bgAnimation);
 					}
 				}
 			}
 			for (let i = 0; i < this.yTiles; i++) {
 				for (let j = 0; j < this.xTiles; j++) {
 					let entity = this.board[i][j];
-					let x =
-						j * this.tileWidth +
-						(this.canvasWidth / 2 - this.cameraX);
-					let y =
-						i * this.tileHeight +
-						(this.canvasHeight / 2 - this.cameraY) +
-						this.topBarHeight;
+					let x = j * this.tileWidth + (this.canvasWidth / 2 - this.cameraX);
+					let y = i * this.tileHeight + (this.canvasHeight / 2 - this.cameraY) + this.topBarHeight;
 
 					if (entity.sprite !== "none" && entity.type !== "ltwall") {
 						this.drawSprite(entity.sprite, x, y);
@@ -337,36 +287,17 @@ export default class Game {
 				this.drawText("  g a m e  o v e r", "left", "w", 0, 0);
 			} else if (this.time <= 0 && this.loading !== "deloading") {
 				this.drawText(" o u t  o f  t i m e", "left", "w", 0, 0);
-			} else if (
-				(this.loading === "none" || this.loading === "spending") &&
-				this.state === "level"
-			) {
+			} else if ((this.loading === "none" || this.loading === "spending") && this.state === "level") {
 				if (this.player.currGoal > this.player.diamonds)
-					this.drawText(
-						` ${this.player.currGoal.toString().padStart(2, "0")}`,
-						"left",
-						"y",
-						0,
-						0
-					);
+					this.drawText(` ${this.player.currGoal.toString().padStart(2, "0")}`, "left", "y", 0, 0);
 				else {
 					this.drawSprite("dwSm", 32, 0);
 					this.drawSprite("dwSm", 64, 0);
 				}
 				this.drawSprite("dwSm", 96, 0);
+				this.drawText(`${this.player.value.toString().padStart(2, "0")}`, "left", "w", 128, 0);
 				this.drawText(
-					`${this.player.value.toString().padStart(2, "0")}`,
-					"left",
-					"w",
-					128,
-					0
-				);
-				this.drawText(
-					` ${this.player.diamonds
-						.toString()
-						.padStart(2, "0")} ${this.time
-						.toString()
-						.padStart(3, "0")} ${this.player.points
+					` ${this.player.diamonds.toString().padStart(2, "0")} ${this.time.toString().padStart(3, "0")} ${this.player.points
 						.toString()
 						.padStart(6, "0")}`,
 					"left",
@@ -375,13 +306,7 @@ export default class Game {
 					0
 				);
 			} else if (this.loading === "loading") {
-				this.drawText(
-					`player 1, ${this.player.lives} men ${this.cave}/${this.level}`,
-					"left",
-					"w",
-					0,
-					0
-				);
+				this.drawText(`player 1, ${this.player.lives} men ${this.cave}/${this.level}`, "left", "w", 0, 0);
 			}
 		}
 	}
@@ -393,11 +318,7 @@ export default class Game {
 			stopAll(false);
 			playAudio("theme");
 		}
-		if (
-			this.coverIndicator < 700 &&
-			this.coverIndicator > 695 &&
-			this.loading === "loading"
-		) {
+		if (this.coverIndicator < 700 && this.coverIndicator > 695 && this.loading === "loading") {
 			playAudio("door");
 			this.deathAnimation = 0;
 			this.board[this.player.y][this.player.x] = this.player;
@@ -422,86 +343,52 @@ export default class Game {
 			for (let row of this.board) {
 				for (let entity of row) {
 					if (isTile(entity)) {
-						if (
-							entity.type === "mwall" &&
-							entity.state === "factive"
-						) {
+						if (entity.type === "mwall" && entity.state === "factive") {
 							this.isMagicWallActive = true;
 						}
 						if (entity.type === "mwall" && this.isMagicWallActive) {
 							entity.state = "active";
 						}
-						if (
-							entity.type === "mwall" &&
-							!this.isMagicWallActive &&
-							entity.state !== "ready" &&
-							entity.state !== "factive"
-						) {
+						if (entity.type === "mwall" && !this.isMagicWallActive && entity.state !== "ready" && entity.state !== "factive") {
 							entity.state = "expired";
 							entity.sprite = "wall";
 						}
-						if (
-							entity.type === "mwall" &&
-							entity.state === "active"
-						) {
+						if (entity.type === "mwall" && entity.state === "active") {
 							playAudio("mwall");
 							let animFrame = this.animationFrame / 2;
-							if (Number.isInteger(animFrame))
-								entity.sprite = "mwall" + animFrame;
+							if (Number.isInteger(animFrame)) entity.sprite = "mwall" + animFrame;
 						}
-						if (
-							entity.type === "mwall" &&
-							entity.state === "expired"
-						)
-							stopAudio("mwall");
+						if (entity.type === "mwall" && entity.state === "expired") stopAudio("mwall");
 					}
 					if (isAmoeba(entity)) {
 						playAudio("amoeba");
 						if (entity.isParent) amoebaParent = entity;
 						amoebas.push(entity);
 					}
-					if (
-						["firefly", "butterfly", "amoeba"].includes(entity.type)
-					) {
+					if (["firefly", "butterfly", "amoeba"].includes(entity.type)) {
 						entity.sprite = entity.type + this.animationFrame;
 					}
-					if (isDiamond(entity))
-						if (entity.ready)
-							entity.sprite = entity.type + this.animationFrame;
+					if (isDiamond(entity)) if (entity.ready) entity.sprite = entity.type + this.animationFrame;
 
-					if (
-						entity.type === "player" &&
-						this.loading !== "loading"
-					) {
+					if (entity.type === "player" && this.loading !== "loading") {
 						entity.sprite = "player";
 						if (this.player.state === "move") {
-							entity.sprite =
-								this.player.move + this.animationFrame;
+							entity.sprite = this.player.move + this.animationFrame;
 						}
 						if (this.player.state === "spending") {
 							entity.sprite = "runright" + this.animationFrame;
 						}
 					}
-					if (
-						entity.type === "otwall" &&
-						compareCoords(entity, this.player) &&
-						this.coverIndicator < 800
-					) {
+					if (entity.type === "otwall" && compareCoords(entity, this.player) && this.coverIndicator < 800) {
 						if (this.animationFrame < 4) entity.sprite = "otwall";
 						else entity.sprite = "twall";
 					}
-					if (
-						entity.type === "player" &&
-						this.loading === "loading" &&
-						this.coverIndicator < 700
-					) {
-						if (Number.isInteger(this.deathAnimation))
-							this.player.sprite = "death" + this.deathAnimation;
+					if (entity.type === "player" && this.loading === "loading" && this.coverIndicator < 700) {
+						if (Number.isInteger(this.deathAnimation)) this.player.sprite = "death" + this.deathAnimation;
 						this.deathAnimation += 0.5;
 					}
 					if (entity.type === "death") {
-						if (Number.isInteger(entity.animation))
-							entity.sprite = playerDeath[entity.animation];
+						if (Number.isInteger(entity.animation)) entity.sprite = playerDeath[entity.animation];
 						entity.animation += 0.25;
 						if (entity.animation >= playerDeath.length - 1) {
 							entity.type = "clear";
@@ -512,8 +399,7 @@ export default class Game {
 
 					if (isDiamond(entity)) {
 						if (!entity.ready) {
-							if (Number.isInteger(entity.animation))
-								entity.sprite = diamondDeath[entity.animation];
+							if (Number.isInteger(entity.animation)) entity.sprite = diamondDeath[entity.animation];
 							entity.animation += 0.5;
 							if (entity.animation >= diamondDeath.length - 1) {
 								entity.type = "diamond";
@@ -536,99 +422,24 @@ export default class Game {
 				for (let j = 0; j < this.xTiles; j++) {
 					let index = i * 40 + j;
 					let tile = this.map[index];
-					if (
-						this.board[i][j].type === "ltwall" &&
-						(this.coverIndicator < 600 ||
-							Math.random() > this.coverIndicator / 1000)
-					) {
-						if (tile === "t")
-							this.board[i][j] = new Tile(
-								j,
-								i,
-								"twall",
-								this.board
-							);
-						else if (tile === "x")
-							this.board[i][j] = new Tile(
-								j,
-								i,
-								"dirt",
-								this.board
-							);
-						else if (tile === "c")
-							this.board[i][j] = new Tile(
-								j,
-								i,
-								"clear",
-								this.board
-							);
-						else if (tile === "w")
-							this.board[i][j] = new Tile(
-								j,
-								i,
-								"wall",
-								this.board
-							);
-						else if (tile === "m")
-							this.board[i][j] = new Tile(
-								j,
-								i,
-								"mwall",
-								this.board
-							);
-						else if (tile === "f")
-							this.board[i][j] = new Firefly(
-								j,
-								i,
-								this.board,
-								"down"
-							);
-						else if (tile === "h")
-							this.board[i][j] = new Firefly(
-								j,
-								i,
-								this.board,
-								"right"
-							);
-						else if (tile === "j")
-							this.board[i][j] = new Firefly(
-								j,
-								i,
-								this.board,
-								"up"
-							);
-						else if (tile === "k")
-							this.board[i][j] = new Firefly(
-								j,
-								i,
-								this.board,
-								"left"
-							);
+					if (this.board[i][j].type === "ltwall" && (this.coverIndicator < 600 || Math.random() > this.coverIndicator / 1000)) {
+						if (tile === "t") this.board[i][j] = new Tile(j, i, "twall", this.board);
+						else if (tile === "x") this.board[i][j] = new Tile(j, i, "dirt", this.board);
+						else if (tile === "c") this.board[i][j] = new Tile(j, i, "clear", this.board);
+						else if (tile === "w") this.board[i][j] = new Tile(j, i, "wall", this.board);
+						else if (tile === "m") this.board[i][j] = new Tile(j, i, "mwall", this.board);
+						else if (tile === "f") this.board[i][j] = new Firefly(j, i, this.board, "down");
+						else if (tile === "h") this.board[i][j] = new Firefly(j, i, this.board, "right");
+						else if (tile === "j") this.board[i][j] = new Firefly(j, i, this.board, "up");
+						else if (tile === "k") this.board[i][j] = new Firefly(j, i, this.board, "left");
 						else if (tile === "u") {
 							this.board[i][j] = new Butterfly(j, i, this.board);
-						} else if (tile === "a")
-							this.board[i][j] = new Amoeba(
-								j,
-								i,
-								this.board,
-								true
-							);
-						else if (tile === "e")
-							this.board[i][j] = new Tile(
-								j,
-								i,
-								"end",
-								this.board
-							);
+						} else if (tile === "a") this.board[i][j] = new Amoeba(j, i, this.board, true);
+						else if (tile === "e") this.board[i][j] = new Tile(j, i, "end", this.board);
 						else if (tile === "s") {
 							this.player.setPos(j, i);
 							this.player.setBoard(this.board);
-							this.board[i][j] = new Tile(
-								j,
-								i,
-								"otwall",
-								this.board
-							);
+							this.board[i][j] = new Tile(j, i, "otwall", this.board);
 						} else if (tile === "b") {
 							this.board[i][j] = new Boulder(j, i, this.board);
 						} else if (tile === "d") {
@@ -642,8 +453,7 @@ export default class Game {
 
 		if (this.loading === "deloading" && this.coverIndicator > 100) {
 			if (this.gameover) this.loading = "back";
-			else if (this.player.x === this.endX && this.player.y === this.endY)
-				this.nextLevel();
+			else if (this.player.x === this.endX && this.player.y === this.endY) this.nextLevel();
 			else this.loadLevel();
 		}
 
@@ -659,11 +469,7 @@ export default class Game {
 			this.coverIndicator += 4;
 		}
 
-		if (
-			this.player.lives === 0 &&
-			this.gameover &&
-			this.loading === "back"
-		) {
+		if (this.player.lives === 0 && this.gameover && this.loading === "back") {
 			this.state = "menu";
 			this.player.state = "dying";
 		}
@@ -671,12 +477,7 @@ export default class Game {
 			playAudio("door");
 			this.board[this.endY][this.endX].sprite = "otwall";
 			this.ctx.fillStyle = "white";
-			this.ctx.fillRect(
-				0,
-				0,
-				this.canvasWidth,
-				this.canvasHeight + this.topBarHeight
-			);
+			this.ctx.fillRect(0, 0, this.canvasWidth, this.canvasHeight + this.topBarHeight);
 			this.flashed = true;
 		}
 		if (this.player.x === this.endX && this.player.y === this.endY) {
@@ -692,8 +493,7 @@ export default class Game {
 	timeCounter() {
 		clearInterval(this.timeInterval);
 		this.timeInterval = setInterval(() => {
-			if (this.time < 10 && this.time > 0)
-				playAudio("timeout" + this.time);
+			if (this.time < 10 && this.time > 0) playAudio("timeout" + this.time);
 			if (this.time > 0) this.time--;
 			if (this.isMagicWallActive) this.magicWallTime--;
 			if (this.magicWallTime < 0) this.isMagicWallActive = false;
@@ -742,44 +542,24 @@ export default class Game {
 
 	updateCamera() {
 		if (Math.abs(this.cameraDestX - this.cameraX) > this.cameraSpeed)
-			this.cameraDestX > this.cameraX
-				? (this.cameraX += this.cameraSpeed)
-				: (this.cameraX -= this.cameraSpeed);
+			this.cameraDestX > this.cameraX ? (this.cameraX += this.cameraSpeed) : (this.cameraX -= this.cameraSpeed);
 		if (Math.abs(this.cameraDestY - this.cameraY) > this.cameraSpeed)
-			this.cameraDestY > this.cameraY
-				? (this.cameraY += this.cameraSpeed)
-				: (this.cameraY -= this.cameraSpeed);
+			this.cameraDestY > this.cameraY ? (this.cameraY += this.cameraSpeed) : (this.cameraY -= this.cameraSpeed);
 
 		// snap camera to edges
-		if (this.cameraX < this.canvasWidth / 2)
-			this.cameraX = this.canvasWidth / 2;
-		else if (this.cameraX > this.boardWidth - this.canvasWidth / 2)
-			this.cameraX = this.boardWidth - this.canvasWidth / 2;
+		if (this.cameraX < this.canvasWidth / 2) this.cameraX = this.canvasWidth / 2;
+		else if (this.cameraX > this.boardWidth - this.canvasWidth / 2) this.cameraX = this.boardWidth - this.canvasWidth / 2;
 
-		if (this.cameraY < this.canvasHeight / 2)
-			this.cameraY = this.canvasHeight / 2;
-		else if (this.cameraY > this.boardHeight - this.canvasHeight / 2)
-			this.cameraY = this.boardHeight - this.canvasHeight / 2;
+		if (this.cameraY < this.canvasHeight / 2) this.cameraY = this.canvasHeight / 2;
+		else if (this.cameraY > this.boardHeight - this.canvasHeight / 2) this.cameraY = this.boardHeight - this.canvasHeight / 2;
 	}
 
 	clearCanvas() {
-		this.ctx.clearRect(
-			0,
-			0,
-			this.canvasWidth,
-			this.canvasHeight + this.topBarHeight
-		);
+		this.ctx.clearRect(0, 0, this.canvasWidth, this.canvasHeight + this.topBarHeight);
 	}
 
-	drawSprite(
-		sprite: string,
-		x: number,
-		y: number,
-		xoff: number = 0,
-		yoff: number = 0
-	) {
-		const spriteCoords =
-			spritesheetCoords[sprite as keyof typeof spritesheetCoords];
+	drawSprite(sprite: string, x: number, y: number, xoff: number = 0, yoff: number = 0) {
+		const spriteCoords = spritesheetCoords[sprite as keyof typeof spritesheetCoords];
 
 		this.ctx.drawImage(
 			this.spritesheet as CanvasImageSource,
@@ -803,8 +583,7 @@ export default class Game {
 				this.drawSprite(color + "Sm0", x + i * 32, y, 0, num * 16);
 			} else {
 				let num = code - 97;
-				if (text[i] !== " ")
-					this.drawSprite(color + "Sma", x + i * 32, y, 0, num * 16);
+				if (text[i] !== " ") this.drawSprite(color + "Sma", x + i * 32, y, 0, num * 16);
 			}
 		}
 	}
